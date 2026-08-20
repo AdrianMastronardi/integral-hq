@@ -34,6 +34,20 @@ uvx pre-commit run --all-files
 
 The same hooks run on every pull request, so the gate holds whether or not it was installed locally.
 
+## Pull requests
+
+`main` is protected and takes no direct pushes: every change arrives as a pull request from a branch. The rules apply to everyone, maintainers included, so the history of the default branch is the history of what went through review.
+
+A pull request merges once the `pre-commit-gate` check is green and the branch is up to date with `main`. An approving review from a second person is not required — the gate is the check, not a queue for someone else's attention — so a contributor is never blocked waiting on availability, only on a red check. History on `main` stays linear: merge with squash or rebase rather than a merge commit.
+
+Every commit that reaches `main` must be signed. Configure signing once, then register the key with GitHub as a *signing* key, which is a different list from the authentication keys:
+
+```sh
+git config --global gpg.format ssh
+git config --global user.signingkey ~/.ssh/id_ed25519.pub
+git config --global commit.gpgsign true
+```
+
 ## Agent instructions
 
 Instructions for coding agents live in [AGENTS.md](AGENTS.md), which every agent reads directly. `CLAUDE.md` is only the bridge that imports it, and a commit hook rejects anything there beyond that import and an HTML comment explaining the arrangement. Every change to how agents work in this repository goes in `AGENTS.md`.
