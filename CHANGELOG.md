@@ -8,6 +8,10 @@ How entries are written — what counts as notable, how they are sorted, how an 
 
 ## [Unreleased]
 
+### Changed
+
+- `CONTRIBUTING.md`: documents the pull request flow now that `main` is protected — branch, pull request, a green `pre-commit-gate`, signed commits, linear history — so the requirements are stated where a contributor reads them rather than discovered when a push is rejected. The rules govern every change to the default branch, maintainers included.
+
 ## [0.0.1] - 2026-08-20
 
 Initial scaffolding for ProductFoundry, a framework intended to cover the software product lifecycle from discovery to verified capability operating in production, preserving a digital thread from the original intent to what actually runs.
