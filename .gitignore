@@ -1,0 +1,34 @@
+# ---------------------------------------------------------------------------
+# ProductFoundry
+#
+# Deliberately minimal: no stack-specific rules until the implementation
+# framework is chosen. Add the Node/TypeScript or Python blocks then.
+# ---------------------------------------------------------------------------
+
+# --- OS / Editors ----------------------------------------------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# --- Secrets / environment -------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# --- Logs ------------------------------------------------------------------
+logs/
+*.log
+
+# --- Working directory -----------------------------------------------------
+# Scratch space for in-progress concepts (EPIC drafts, briefs, notes).
+# Anything that belongs to the digital thread lives in docs/, not here.
+discovery/
+
+# --- Dogfooding ------------------------------------------------------------
+# Output the ProductFoundry scaffolding writes into a builder's directory.
+# Uncomment once the CLI defines its own output paths.
+# .productfoundry/

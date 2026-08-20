@@ -1,0 +1,43 @@
+{
+  "config": {
+    "default": true,
+    "line-length": false,
+    "no-trailing-spaces": true,
+    "no-duplicate-heading": {
+      "siblings_only": true
+    },
+    "no-multiple-blanks": {
+      "maximum": 1
+    },
+    "no-hard-tabs": true,
+    "blanks-around-headings": {
+      "lines_above": 1,
+      "lines_below": 1
+    },
+    "blanks-around-lists": true,
+    "list-marker-space": true,
+    "ul-style": {
+      "style": "dash"
+    },
+    "code-block-style": {
+      "style": "fenced"
+    },
+    "fenced-code-language": true,
+    "first-line-heading": true,
+    "no-inline-html": false,
+    // Traceability tables are edited by hand and grow one row at a time.
+    // Requiring aligned pipes would turn each new row into a diff of the
+    // whole table, which destroys the signal in a document-first repository.
+    "table-column-style": false
+  },
+  "ignores": [
+    // CLAUDE.md is the bridge to AGENTS.md: its first line is the `@AGENTS.md`
+    // import, so MD041 can never pass there. AGENTS.md carries real content and
+    // is linted like any other document.
+    "CLAUDE.md",
+    // Third-party text kept verbatim (Contributor Covenant 2.1, CC BY 4.0).
+    // It uses `*` bullets where this project uses `-`; reformatting it would
+    // have to be redone on every upstream version, so it is not linted.
+    "CODE_OF_CONDUCT.md"
+  ]
+}

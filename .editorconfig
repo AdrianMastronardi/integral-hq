@@ -1,0 +1,18 @@
+# Editor-agnostic counterpart to .vscode/settings.json, which is not tracked.
+# These are the same rules the commit gate enforces; having them here means an
+# editor applies them while you type instead of a hook correcting them later.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[*.py]
+indent_size = 4
+
+[Makefile]
+indent_style = tab

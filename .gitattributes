@@ -1,0 +1,73 @@
+# ---------------------------------------------------------------------------
+# ProductFoundry
+#
+# Normalize every text file to LF in the repository, and teach git how to
+# read the formats this repository is made of.
+# ---------------------------------------------------------------------------
+
+# --- Line endings ----------------------------------------------------------
+* text=auto eol=lf
+
+*.cjs text eol=lf
+*.css text eol=lf
+*.csv text eol=lf
+*.html text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.jsonc text eol=lf
+*.jsx text eol=lf
+*.md text eol=lf
+*.mjs text eol=lf
+*.py text eol=lf
+*.sh text eol=lf
+*.sql text eol=lf
+*.svg text eol=lf
+*.toml text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.txt text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+Dockerfile text eol=lf
+Makefile text eol=lf
+
+# Windows shells only run these with CRLF; exempt them from the rule above.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# --- Diff hunk headers -----------------------------------------------------
+# Built-in git diff drivers: the @@ line names the enclosing heading or
+# function instead of an arbitrary line of context. Worth most on *.md, where
+# it turns a diff into "this changed inside ## Traceability".
+*.md diff=markdown
+*.css diff=css
+*.html diff=html
+*.py diff=python
+*.sh diff=bash
+
+# --- Generated lockfiles ---------------------------------------------------
+# Written by a tool, read by nobody: collapse them in diffs and keep them out
+# of GitHub's language stats and review surface. Listed ahead of the package
+# manager being chosen, so whichever one lands is already covered.
+package-lock.json -diff linguist-generated
+pnpm-lock.yaml -diff linguist-generated
+yarn.lock -diff linguist-generated
+bun.lock -diff linguist-generated
+bun.lockb binary linguist-generated
+uv.lock -diff linguist-generated
+poetry.lock -diff linguist-generated
+Cargo.lock -diff linguist-generated
+
+# --- Binary ----------------------------------------------------------------
+# text=auto guesses these right nearly always; saying it outright removes the
+# guess, so nothing ever tries to normalize or line-diff them.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.zip binary

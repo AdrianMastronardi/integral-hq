@@ -1,0 +1,46 @@
+# pre-commit hooks. Install them once with: uvx pre-commit install
+#
+# Deliberately minimal, like .gitignore: only what applies to a document-first
+# repository. Stack hooks (ruff, eslint, tsc, zizmor) arrive alongside the code
+# they verify, not before it.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0 # pinned; bump with pre-commit autoupdate
+    hooks:
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-added-large-files
+      - id: detect-private-key
+      # No `check-json`: .markdownlint-cli2.jsonc carries comments and is
+      # invalid JSON by definition, so the hook would fail from day one.
+
+  # `detect-private-key` only recognizes PEM blocks. This covers what can
+  # actually leak here: a GitHub token pasted into an EPIC example, an LLM
+  # provider key, a connection string. `.env` is in `.gitignore`, but that
+  # protects a file, not a value pasted inside a document. Adopted with the
+  # history at 2 commits, scanned in full and with no findings.
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0 # pinned; bump with pre-commit autoupdate
+    hooks:
+      - id: gitleaks
+
+  # The gate that was missing: .markdownlint-cli2.jsonc already defined the
+  # rules and nothing was running them. tmp/ never reaches this point:
+  # pre-commit only passes staged files and tmp/ is in .gitignore.
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.23.2 # pinned; bump with pre-commit autoupdate
+    hooks:
+      - id: markdownlint-cli2
+
+  # CLAUDE.md is the bridge Claude Code resolves; Codex and other agents read
+  # AGENTS.md directly and do not resolve imports, so the content lives there.
+  # Without this hook, the habit of editing CLAUDE.md forks the two in silence.
+  - repo: local
+    hooks:
+      - id: claude-md-bridge
+        name: CLAUDE.md is only the bridge to AGENTS.md
+        entry: python3 scripts/check_claude_bridge.py
+        language: system
+        files: ^CLAUDE\.md$
+        pass_filenames: false

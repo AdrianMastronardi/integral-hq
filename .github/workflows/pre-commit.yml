@@ -1,0 +1,34 @@
+name: pre-commit
+
+# The commit gate is installed locally with `uvx pre-commit install`, which is
+# opt-in: a contribution from someone who never ran it would otherwise reach the
+# repository unchecked. This workflow runs the same hooks on every pull request,
+# so the gate holds whether or not it was installed.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pre-commit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pre-commit-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # No later step talks to GitHub. Without this the token is left in the
+          # runner's .git/config, where it can travel inside an artifact.
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Run every hook
+        run: uvx pre-commit run --all-files --show-diff-on-failure
