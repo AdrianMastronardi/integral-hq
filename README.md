@@ -1,5 +1,5 @@
-# integral-hq
+# Integral HQ
 
-> Integral: change without losing intent
+**Change without losing intent.**
 
-HQ for Integral, an operating system for agentic product development
+HQ for Integral, an operating system for agentic product development.

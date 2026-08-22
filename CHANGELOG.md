@@ -8,17 +8,21 @@ How entries are written — what counts as notable, how they are sorted, how an 
 
 ## [Unreleased]
 
-The project is renamed from ProductFoundry to Integral, and the repository from `product-foundry-hq` to `integral-hq`. The new name states what the framework is for rather than what it is made of: *change without losing intent* is the claim a digital thread exists to keep. GitHub redirects the old repository URL, so existing clones and links keep working; repointing a clone's `origin` at the new name is still worth doing.
+## [0.1.0] - 2026-08-22
+
+### Added
+
+- `charter.md`: constitutes Integral around the principle “Change without losing intent” and defines its authority boundary, artifact model, digital thread, promotion contract and constitutional principles.
 
 ### Changed
 
 - `CONTRIBUTING.md`: documents the pull request flow now that `main` is protected — branch, pull request, a green `pre-commit-gate`, signed commits, linear history — so the requirements are stated where a contributor reads them rather than discovered when a push is rejected. The rules govern every change to the default branch, maintainers included.
-- `LICENSE`: holds the copyright under Integral Contributors, following the rename. The license is the same MIT text on the same terms; only the name of the holder moved.
-- `README.md`: names the project Integral and opens with its motto, so the entry point leads with what the project claims rather than only with what it is.
+- `LICENSE`: holds the copyright under Integral Contributors while preserving the MIT terms.
+- `README.md`: names the project Integral HQ and opens with its motto, so the entry point leads with what the project claims rather than only with what it is.
 
 ## [0.0.1] - 2026-08-20
 
-Initial scaffolding for ProductFoundry, a framework intended to cover the software product lifecycle from discovery to verified capability operating in production, preserving a digital thread from the original intent to what actually runs.
+Initial scaffolding for Integral, a framework intended to cover the software product lifecycle from discovery to verified capability operating in production, preserving a digital thread from the original intent to what actually runs.
 
 This release contains no implementation. It establishes licensing, the terms of contribution, the documentation entry point, the Markdown and line-ending rules the repository is written to, the editor configuration and ignore rules that keep those rules from depending on a per-contributor setup, the brief coding agents draft from, and the commit-time checks that every later change is expected to pass. The implementation stack is deliberately still undecided, so the line-ending rules, diff drivers, and lockfile declarations already cover the common source and package-manager formats: choosing a stack later does not mean revisiting repository plumbing.
 
@@ -31,8 +35,9 @@ The commit gate is adopted now rather than later, while it is still cheap. With 
 - `CLAUDE.md`: bridges Claude Code to `AGENTS.md`, which Codex and other agents read directly. It carries that import and an HTML comment explaining the arrangement, and a commit hook rejects anything else, so the two cannot drift.
 - `CODE_OF_CONDUCT.md`: adopts the Contributor Covenant 2.1 verbatim, with reports going to <adrian@mastronardi.xyz>. It does nothing while the project has one contributor; it is added now because adding it after an incident reads as a reaction to that incident.
 - `CONTRIBUTING.md`: states the project's scope, the English and Markdown conventions, the commit gate to install, and where the changelog brief lives, so a contributor is not expected to reconstruct them from the configuration files. Agent authorship is treated as the normal case: what a contribution needs is someone who stands behind it, not a disclosure of what wrote it.
-- `LICENSE`: licenses the project under the MIT License, with copyright held by ProductFoundry Contributors.
+- `LICENSE`: licenses the project under the MIT License, with copyright held by Integral Contributors.
 - `README.md`: names the project and states its purpose in a single line.
 
-[Unreleased]: https://github.com/AdrianMastronardi/integral-hq/compare/v0.0.1...HEAD
+[Unreleased]: https://github.com/AdrianMastronardi/integral-hq/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/AdrianMastronardi/integral-hq/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/AdrianMastronardi/integral-hq/releases/tag/v0.0.1

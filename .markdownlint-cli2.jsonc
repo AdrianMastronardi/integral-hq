@@ -10,6 +10,10 @@
       "maximum": 1
     },
     "no-hard-tabs": true,
+    "single-title": {
+      "level": 1,
+      "front_matter_title": ""
+    },
     "blanks-around-headings": {
       "lines_above": 1,
       "lines_below": 1
@@ -25,10 +29,11 @@
     "fenced-code-language": true,
     "first-line-heading": true,
     "no-inline-html": false,
-    // Traceability tables are edited by hand and grow one row at a time.
-    // Requiring aligned pipes would turn each new row into a diff of the
-    // whole table, which destroys the signal in a document-first repository.
-    "table-column-style": false
+    // Tables are constitutional reading surfaces: keep columns aligned so the
+    // source remains scannable without a Markdown renderer.
+    "table-column-style": {
+      "style": "aligned"
+    }
   },
   "ignores": [
     // CLAUDE.md is the bridge to AGENTS.md: its first line is the `@AGENTS.md`

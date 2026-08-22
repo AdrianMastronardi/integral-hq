@@ -4,9 +4,15 @@ Instructions for coding agents working in this repository. Claude Code reads `CL
 
 ## Commit gate
 
-Every change is expected to pass the hooks in `.pre-commit-config.yaml`: merge-conflict markers, end-of-file and trailing-whitespace normalization, oversized files, private keys, hardcoded secrets, and Markdown linting. Install them once with `uvx pre-commit install`.
+Every change is expected to pass the hooks in `.pre-commit-config.yaml`: merge-conflict markers, end-of-file and trailing-whitespace normalization, oversized files, private keys, hardcoded secrets, Markdown formatting, and Markdown linting. Install them once with `uvx pre-commit install`.
 
 Do not add a hook that requires a changelog edit on every change. It teaches contributors to add a line to pass the check, which is how a changelog fills with noise. Automation handles mechanics; judgment stays with people.
+
+## Durable repository documentation
+
+`README.md`, `CONTRIBUTING.md`, `AGENTS.md` and `charter.md` describe identity and standing contracts. Do not encode the repository's current maturity, implementation progress or temporary roadmap conditions in them: avoid claims that the project is at a particular stage, that a component does not exist yet or that an instruction applies only until a planned milestone lands. Put live progress in issues, pull requests or project tracking, and put dated historical state in `CHANGELOG.md`.
+
+The Charter may identify an unresolved model decision when that absence is itself part of the constitutional contract. State the missing rule and its boundary, not the implementation status of the repository.
 
 ## Writing the changelog
 
