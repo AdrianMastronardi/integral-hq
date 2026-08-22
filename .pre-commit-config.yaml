@@ -25,6 +25,18 @@ repos:
     hooks:
       - id: gitleaks
 
+  # Formatting runs before linting so contributors do not have to align table
+  # pipes by hand. Preserve prose line boundaries and leave verbatim third-party
+  # text and the Claude bridge untouched.
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.6.2 # pinned; bump with pre-commit autoupdate
+    hooks:
+      - id: prettier
+        name: Format Markdown with Prettier
+        types_or: [markdown]
+        args: [--prose-wrap=preserve]
+        exclude: ^(CLAUDE\.md|CODE_OF_CONDUCT\.md)$
+
   # The gate that was missing: .markdownlint-cli2.jsonc already defined the
   # rules and nothing was running them. tmp/ never reaches this point:
   # pre-commit only passes staged files and tmp/ is in .gitignore.

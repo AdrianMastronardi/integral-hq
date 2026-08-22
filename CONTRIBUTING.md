@@ -6,7 +6,7 @@ Issues and pull requests are welcome. Participation is governed by the [Code of 
 
 Integral is a framework for covering the software product lifecycle from discovery to verified capability operating in production, preserving a digital thread from the original intent to what actually runs. Contributions should preserve that purpose.
 
-The project is at scaffolding stage: the conceptual model is still being drafted and no implementation exists yet. Until it lands, open an issue before anything beyond a typo or a small clarification, so that the change and the model do not diverge.
+`charter.md` is the constitutional authority for the framework's purpose, jurisdiction and conceptual model. A contribution that changes that boundary is a Charter amendment and follows its amendment rule; every other contribution must remain consistent with it.
 
 ## Authorship
 
@@ -18,7 +18,7 @@ A contribution that no one has run, that answers no stated need, or that arrives
 
 Repository artifacts — documentation, instructions, examples, and user-facing messages — are written in English.
 
-Keep each Markdown paragraph and list item on one logical source line. Hard-wrapped prose turns a one-word edit into a reflowed paragraph, which is why line length is not enforced and manually aligned tables are not required.
+Keep each Markdown paragraph and list item on one logical source line. Hard-wrapped prose turns a one-word edit into a reflowed paragraph, which is why line length is not enforced. Prettier preserves those prose boundaries and aligns Markdown tables automatically at commit time.
 
 Install the commit gate once:
 
@@ -26,7 +26,7 @@ Install the commit gate once:
 uvx pre-commit install
 ```
 
-It checks merge-conflict markers, end-of-file and trailing-whitespace normalization, oversized files, private keys, and hardcoded secrets, lints Markdown, and verifies that `CLAUDE.md` holds nothing but its import and an HTML comment explaining the arrangement. Run it over the whole tree with:
+It checks merge-conflict markers, end-of-file and trailing-whitespace normalization, oversized files, private keys, and hardcoded secrets; formats Markdown before linting it; and verifies that `CLAUDE.md` holds nothing but its import and an HTML comment explaining the arrangement. If the formatter changes a staged file, review and stage the result before committing again. Run the gate over the whole tree with:
 
 ```sh
 uvx pre-commit run --all-files
@@ -40,7 +40,7 @@ The same hooks run on every pull request, so the gate holds whether or not it wa
 
 A pull request merges once the `pre-commit-gate` check is green and the branch is up to date with `main`. An approving review from a second person is not required — the gate is the check, not a queue for someone else's attention — so a contributor is never blocked waiting on availability, only on a red check. History on `main` stays linear: merge with squash or rebase rather than a merge commit.
 
-Every commit that reaches `main` must be signed. Configure signing once, then register the key with GitHub as a *signing* key, which is a different list from the authentication keys:
+Every commit that reaches `main` must be signed. Configure signing once, then register the key with GitHub as a _signing_ key, which is a different list from the authentication keys:
 
 ```sh
 git config --global gpg.format ssh
