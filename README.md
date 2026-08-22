@@ -1,3 +1,5 @@
-# product-foundry-hq
+# integral-hq
 
-HQ for ProductFoundry, an operating system for agentic product development
+> Integral: change without losing intent
+
+HQ for Integral, an operating system for agentic product development

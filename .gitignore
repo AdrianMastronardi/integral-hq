@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# ProductFoundry
+# Integral
 #
 # Deliberately minimal: no stack-specific rules until the implementation
 # framework is chosen. Add the Node/TypeScript or Python blocks then.
@@ -29,6 +29,6 @@ logs/
 discovery/
 
 # --- Dogfooding ------------------------------------------------------------
-# Output the ProductFoundry scaffolding writes into a builder's directory.
+# Output the Integral scaffolding writes into a builder's directory.
 # Uncomment once the CLI defines its own output paths.
-# .productfoundry/
+# .integral/
