@@ -8,9 +8,13 @@ How entries are written — what counts as notable, how they are sorted, how an 
 
 ## [Unreleased]
 
+The project is renamed from ProductFoundry to Integral, and the repository from `product-foundry-hq` to `integral-hq`. The new name states what the framework is for rather than what it is made of: *change without losing intent* is the claim a digital thread exists to keep. GitHub redirects the old repository URL, so existing clones and links keep working; repointing a clone's `origin` at the new name is still worth doing.
+
 ### Changed
 
 - `CONTRIBUTING.md`: documents the pull request flow now that `main` is protected — branch, pull request, a green `pre-commit-gate`, signed commits, linear history — so the requirements are stated where a contributor reads them rather than discovered when a push is rejected. The rules govern every change to the default branch, maintainers included.
+- `LICENSE`: holds the copyright under Integral Contributors, following the rename. The license is the same MIT text on the same terms; only the name of the holder moved.
+- `README.md`: names the project Integral and opens with its motto, so the entry point leads with what the project claims rather than only with what it is.
 
 ## [0.0.1] - 2026-08-20
 
@@ -30,5 +34,5 @@ The commit gate is adopted now rather than later, while it is still cheap. With 
 - `LICENSE`: licenses the project under the MIT License, with copyright held by ProductFoundry Contributors.
 - `README.md`: names the project and states its purpose in a single line.
 
-[Unreleased]: https://github.com/AdrianMastronardi/product-foundry-hq/compare/v0.0.1...HEAD
-[0.0.1]: https://github.com/AdrianMastronardi/product-foundry-hq/releases/tag/v0.0.1
+[Unreleased]: https://github.com/AdrianMastronardi/integral-hq/compare/v0.0.1...HEAD
+[0.0.1]: https://github.com/AdrianMastronardi/integral-hq/releases/tag/v0.0.1

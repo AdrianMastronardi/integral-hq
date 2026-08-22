@@ -4,7 +4,7 @@ Issues and pull requests are welcome. Participation is governed by the [Code of 
 
 ## Scope
 
-ProductFoundry is a framework for covering the software product lifecycle from discovery to verified capability operating in production, preserving a digital thread from the original intent to what actually runs. Contributions should preserve that purpose.
+Integral is a framework for covering the software product lifecycle from discovery to verified capability operating in production, preserving a digital thread from the original intent to what actually runs. Contributions should preserve that purpose.
 
 The project is at scaffolding stage: the conceptual model is still being drafted and no implementation exists yet. Until it lands, open an issue before anything beyond a typo or a small clarification, so that the change and the model do not diverge.
 

@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# ProductFoundry
+# Integral
 #
 # Normalize every text file to LF in the repository, and teach git how to
 # read the formats this repository is made of.
