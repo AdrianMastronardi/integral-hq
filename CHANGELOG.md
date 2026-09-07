@@ -8,6 +8,10 @@ How entries are written — what counts as notable, how they are sorted, how an 
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking:** `charter.md` now delegates artifact serialization, aggregate layout and deterministic verification to Specifications while retaining semantic authority, moving Canon under a reserved `docs/` root, making Source relationships optional, resolving immediate membership transitively, and giving Work Packages and Work Items explicit coordination status, so existing Canon representations must adopt the resulting Specification contracts before promotion.
+
 ## [0.1.0] - 2026-08-22
 
 ### Added

@@ -46,9 +46,9 @@ It is not a specification generator, a backlog methodology, or a coding workflow
 | **Agent-first**          | The principal reader is a coding agent working within a context window, not a person with institutional memory                                         |
 | **Graph-native**         | Artifacts are nodes with typed relations. Traceability is a query, never a maintained matrix                                                           |
 | **Deterministic gates**  | Every automated check is computable without a language model. Given the same validator version and declared inputs, it always produces the same result |
-| **Forge-independent**    | The traceability core needs plain git. Forges add execution-state resolution; runtime completion requires configured external authorities              |
+| **Forge-independent**    | The traceability core needs plain git. Forges may enrich coordination and review; runtime completion requires configured external authorities          |
 | **Multi-repository**     | Planning and traceability across repositories are first-class. Portable integration and activation remain an explicit open contract                    |
-| **Format-minimal**       | Markdown with YAML frontmatter. If you can `cat` a file you can read it; if you can `git clone` you can ship it                                        |
+| **Format-minimal**       | Canon uses an open, inspectable representation selected by Specification; no proprietary runtime is required to read it                                |
 
 ### The one-sentence claim
 
@@ -128,7 +128,7 @@ A manually maintained summary is a document that will eventually lie. The framew
 
 ## 4. Theoretical framework
 
-### 4.1 The ontology: nine kinds of knowledge
+### 4.1 The ontology: nine concepts in the thread
 
 The core insight is that the chain below is **not a hierarchy of size**. Each step answers a fundamentally different question, and the difference is in kind, not in magnitude.
 
@@ -150,6 +150,8 @@ An Intent may be one sentence. A Decision may run fifty pages. A Requirement may
 
 These are also not lifecycle statuses. An artifact does not become a Requirement by moving through a workflow. It is a Requirement because it states something that must be true.
 
+This is not the list of Canon artifact classes. Intent and Outcome are knowledge contained by a Specification rather than independently identified artifacts. Work Package is a coordination artifact that organizes Work Items but adds no semantic step to the chain above. Implementation is code in a code repository, not a Canon artifact. [Section 6.1](#61-eight-classes) defines the resulting eight Canon classes.
+
 Seven of the nine advance the chain. Constraint and Source do not. A Constraint is already true when the work starts, and the work has to hold within it. A Source is governed outside the decision boundary of the work that consumes it. It may be internal or external to the organization. **A Requirement is something this work must make true. A Constraint is something already true that this work cannot violate. A Source is the separately governed authority or evidence one of them rests on.**
 
 #### Classification test
@@ -164,7 +166,7 @@ When the category is unclear, ask in order:
 6. Does it state **an obligation this work must make true**? → Requirement
 7. Does it establish a **durable solution commitment that subsequent work must follow**? → Decision
 8. Does it describe **an executable unit of work**? → Work Item
-9. Is it **source, configuration or infrastructure**? → Implementation
+9. Is it **source code, configuration or infrastructure**? → Implementation
 
 Constraint is asked before Requirement on purpose. A Constraint is also a verifiable obligation, so a test that asks for Requirement first swallows it.
 
@@ -203,7 +205,7 @@ The chain runs downward. The Constraint enters sideways, because nothing in this
 
 ### 4.2 The two spaces
 
-The Canon is rooted at the **HQ**: the repository an agent enters the system through. Its root `charter.md` constitutes its authority. Once Canon materializes, its generated `index.md` resolves the tree and its `specs/` and `sources/` collections hold root Canon. Everything canonical hangs off it.
+The Canon is rooted at the **HQ**: the repository an agent enters the system through. Its root `charter.md` constitutes its authority. Once Canon materializes, its generated `docs/index.md` resolves the tree and its `docs/specs/` and `docs/sources/` collections hold root Canon. Everything canonical hangs off it.
 
 |                 | Discovery Space   | Canon                                |
 | --------------- | ----------------- | ------------------------------------ |
@@ -257,34 +259,32 @@ A **scope** models conceptual ownership. It is a node of the tree hanging off th
 ```text
 acme-hq
 ├── charter.md                   constitutes the HQ
-├── index.md                     generated when Canon materializes
 ├── discovery/                  ignored, non-canonical
-├── specs/                       Specifications owned by the HQ
-│   └── SPEC-0001/
-│       └── SPEC-0001.md
-├── sources/                     Sources curated by the HQ
-│   └── SOURCE-0001/
-│       └── SOURCE-0001.md
+├── docs/                        reserved Canon root
+│   ├── index.md                 generated when Canon materializes
+│   ├── specs/                   Specifications owned by the HQ
+│   └── sources/                 Sources curated by the HQ
 ├── identity/                    child Scope because charter.md exists
 │   ├── charter.md
-│   ├── index.md
 │   ├── discovery/
-│   ├── specs/
-│   │   └── SPEC-0017/
-│   │       └── SPEC-0017.md
-│   └── sources/
+│   └── docs/
+│       ├── index.md
+│       ├── specs/
+│       └── sources/
 └── payments/                    child Scope
     ├── charter.md
-    ├── index.md
     ├── discovery/
-    ├── specs/
-    ├── sources/
+    ├── docs/
+    │   ├── index.md
+    │   ├── specs/
+    │   └── sources/
     └── settlement/              nested Scope
         ├── charter.md
-        ├── index.md
         ├── discovery/
-        ├── specs/
-        └── sources/
+        └── docs/
+            ├── index.md
+            ├── specs/
+            └── sources/
 ```
 
 _Product_ is not a term of this framework. A product is a scope like any other, named by whoever owns it. The framework already has one word for a node that owns conceptual truth, and a second word would name a level rather than a role.
@@ -295,7 +295,7 @@ Placement answers **who owns this subject**. The mandatory `charter.md` at that 
 
 The **HQ Charter** is the founding record that constitutes the HQ. Every other Scope also carries exactly one `charter.md`. A directory without it is not a Scope, and one jurisdiction never has two concurrent Charters. The Charter states why its containing Scope exists, what it includes and excludes, the authority under which promotion occurs, and how its foundations may be amended.
 
-Charter is not an ordinary Source: a Source is cited evidence or authority outside a consuming decision boundary, while `charter.md` creates the boundary in which that Scope's Canon can exist. It is not a Specification either: a Specification states a result the product must produce, while the Charter legislates who may decide and within what jurisdiction. For that reason Charter is structural metadata outside the eight Canon artifact classes. It has no `CHARTER-NNNN` identity: the containing Scope is its subject, and the HQ evaluation manifest pins its path and digest.
+Charter is not an ordinary Source: a Source is cited evidence or authority outside a consuming decision boundary, while `charter.md` creates the boundary in which that Scope's Canon can exist. It is not a Specification either: a Specification states a result the product must produce, while the Charter legislates who may decide and within what jurisdiction. For that reason Charter is structural metadata outside the eight Canon artifact classes. It has no `CHARTER-NNNN` identity: the containing Scope is its subject, and accepted repository history preserves its exact text.
 
 The HQ originates through Genesis: the accepted git revision that first introduces its root Charter into the HQ's authoritative history. Git records the exact content, attribution and time; when repository policy requires a cryptographic commit signature, that signature is part of the same evidence rather than a second constitutional document.
 
@@ -305,14 +305,15 @@ The complete structural vocabulary of a Scope is deliberately small:
 
 ```text
 charter.md    curated constitutional authority
-index.md      generated navigation once Canon materializes
 discovery/    ignored, non-canonical exploration
-specs/        Specification aggregates
-sources/      Source aggregates
+docs/         reserved Canon root
+  index.md    generated navigation once Canon materializes
+  specs/      Specifications
+  sources/    Sources
 <child>/      another Scope exactly when <child>/charter.md exists
 ```
 
-`specs/`, `sources/` and `discovery/` are reserved collections, never Scopes. A directory below `specs/` or `sources/` organizes one Canon aggregate; it does not create jurisdiction. A non-reserved child directory becomes a Scope only through its own accepted `charter.md`.
+`docs/` and `discovery/` are reserved collections, never Scopes. Within `docs/`, `specs/` and `sources/` are also reserved. A directory below those collections may organize a Canon aggregate; it does not create jurisdiction. A non-reserved child directory becomes a Scope only through its own accepted `charter.md`.
 
 The founding Charter and every accepted revision remain recoverable through git history. Charter carries no independent revision field: the accepted git revision identifies its exact text.
 
@@ -324,72 +325,35 @@ The placement rule:
 
 > **A canonical artifact lives at the lowest scope that completely owns its subject.**
 
-This prevents both unnecessary centralization and duplicated canonical truth. A decision governing two services in Identity belongs under `identity/specs/`, not to the root and not to either service. `identity/charter.md` establishes that Identity has authority over that subject.
+This prevents both unnecessary centralization and duplicated canonical truth. A decision governing two services in Identity belongs under `identity/docs/specs/`, not to the root and not to either service. `identity/charter.md` establishes that Identity has authority over that subject.
 
 The same rule decides what lives at the HQ, because the HQ is the root scope. Nothing has to be enumerated: whatever no scope below completely owns belongs there. In this repository, that is the definition of the framework itself.
 
-What sits there has the ordinary shape. An organization-wide product obligation is not a loose statement pinned to the root or hidden in the Charter; it is a Specification under the HQ's `specs/`, whose Intent is organization-wide and which holds the Constraints that Intent justifies. _Operate lawfully in the jurisdictions we sell in_ is an Intent, and data residency is one of its Constraints. The Charter establishes who may own that rule, not the rule's product semantics.
+What sits there has the ordinary shape. An organization-wide product obligation is not a loose statement pinned to the root or hidden in the Charter; it is a Specification under the HQ's `docs/specs/`, whose Intent is organization-wide and which holds the Constraints that Intent justifies. _Operate lawfully in the jurisdictions we sell in_ is an Intent, and data residency is one of its Constraints. The Charter establishes who may own that rule, not the rule's product semantics.
 
-**The HQ is always a repository, and a scope may be one.** Canon lives in repositories because repositories provide the immutable candidate revisions that gates inspect. A split scope may run repository-local validators, but canonical promotion always happens through the HQ promotion gate. That gate evaluates the complete candidate manifest, serializes acceptance, assigns identifiers and records the resulting global index revision. By default a scope is a directory inside the HQ, which is one clone and no coordination. Splitting a scope into its own repository is allowed when something forces it, an access boundary the organization must enforce being the usual reason. It costs a hop against PRINCIPLE-00, so it is a decision, not a default.
+**The HQ is always a repository, and a Scope may be one.** Canon lives in repositories because repositories provide immutable candidate revisions for verification. A split Scope may run repository-local validators, but canonical promotion is always accepted through the HQ, which serializes acceptance and preserves global identity. The verification Specification defines the concrete protocol. By default a Scope is a directory inside the HQ, which is one clone and no coordination. Splitting a Scope into its own repository is allowed when something forces it, an access boundary the organization must enforce being the usual reason. It costs a hop against PRINCIPLE-00, so it is a decision, not a default.
 
-**A code repository holds implementation and repository-local supporting material, but no canonical Integral artifacts.** Nothing enters it that does not declare the Work Item it realizes, which is what gate X1 checks.
+**A code repository holds implementation and repository-local supporting material, but no canonical Integral artifacts.** Every governed implementation change remains traceable to the Work Item it realizes; the accepted verification contract defines how that claim is represented and checked.
 
 **A code repository registers into exactly one scope through authoritative structural metadata declared only by that scope.** Placement determines ownership; that Scope's `charter.md` constitutes its authority. The HQ derives repository resolution and global uniqueness from those declarations. Generated indexes, locks and external resolvers may materialize or verify a registration, but never author it. Registration links code to ownership; it does not move ownership into the code repository.
 
 **A Constraint applies through the non-exclusive Specification hierarchy, not through Scope.** A Specification may declare any number of upstream Specification baselines through `based-on`; it inherits the union of their effective Constraints transitively. Capability and Constraint are evaluated together inside the Specification. Every separate Requirement, Decision and Work Item belonging to it is derived as `constrained-by` its own and inherited Constraints; none repeats that fact. When a Constraint changes, those derived edges select every affected branch for reevaluation. Placement in a descendant scope creates no inheritance.
 
-Specifications that share an upstream base inherit its Constraints but do not inherit local Constraints laterally from one another. When a local Constraint comes to govern several such Specifications, it graduates to a common upstream Specification: a new authoritative Constraint there supersedes the local formulation, and each affected Specification reaches it through its own `based-on` graph. The generated index materializes each Specification's effective Constraint set. Gate G8 checks hierarchy, coverage and the structural validity of `narrows`; review decides whether one Constraint is semantically stricter than another.
+Specifications that share an upstream base inherit its Constraints but do not inherit local Constraints laterally from one another. When a local Constraint comes to govern several such Specifications, it graduates to a common upstream Specification: a new authoritative Constraint there supersedes the local formulation, and each affected Specification reaches it through its own derivation graph. The generated index materializes each Specification's effective Constraint set. Deterministic verification checks hierarchy, coverage and the structural validity of narrowing; review decides whether one Constraint is semantically stricter than another.
 
 The union of inherited Constraints must be coherent. A derived Specification may neither ignore nor override an inherited Constraint when two upstream bases disagree. A known contradiction blocks the transition from Design to Build until the Specifications that own those Constraints resolve or supersede them. Detecting semantic conflict is judgment, not a deterministic gate; the unresolved judgment mechanism is recorded in [section 12](#12-open-questions).
 
 #### Canonical collections and aggregates
 
-The Canon owned by one Scope is exactly the union of its `specs/` and `sources/` trees. There is no generic `docs/` collection: a canonical document is either derived from an Intent and belongs to a Specification aggregate, or it records a separately governed authority as a Source aggregate.
+The Canon owned by one Scope is exactly the union of its `docs/specs/` and `docs/sources/` trees. `docs/` is reserved for Canon and is not a generic documentation directory. A canonical document either belongs to a Specification aggregate or records a separately governed authority as a Source.
 
-A root artifact owns a predictable directory whose name and principal file match its identifier:
+Specification semantically contains its Intent, Outcome, Capabilities, Constraints and Requirements. Work Package coordinates its Work Items. Source remains independent of every Specification and may carry supporting material. The accepted representation Specification decides how files, collections and aggregate directories realize those facts; a directory alone creates neither identity nor authority.
 
-```text
-specs/SPEC-0017/SPEC-0017.md
-sources/SOURCE-0001/SOURCE-0001.md
-```
+A Source lives in `docs/sources/` of the lowest Scope that completely owns the curated extract, whether or not another Canon artifact currently cites it. Its underlying resource may live inside or outside the HQ and remains governed outside the consuming decision boundary.
 
-The default Specification aggregate is:
+When a Scope first accepts Canon, the same promotion materializes its generated `docs/index.md`. It provides navigation to local Specifications, local Sources and immediate child Scopes without flattening every descendant into one file. Agents descend through the index tree within PRINCIPLE-00. The representation Specification defines whether any subordinate generated navigation is needed; it can never create a second authority for Canon facts.
 
-```text
-specs/
-└── SPEC-0017/
-    ├── SPEC-0017.md
-    ├── requirements/
-    │   └── SPEC-0017-REQ-0003/
-    │       └── SPEC-0017-REQ-0003.md
-    ├── decisions/
-    │   └── SPEC-0017-DEC-0001/
-    │       └── SPEC-0017-DEC-0001.md
-    └── work-packages/
-        └── SPEC-0017-WP-0001/
-            ├── SPEC-0017-WP-0001.md
-            └── work-items/
-                └── SPEC-0017-WI-0004/
-                    └── SPEC-0017-WI-0004.md
-```
-
-Capabilities and Constraints remain inline in `SPEC-0017.md` until PRINCIPLE-00 requires one to split. A split element receives the same aggregate shape under `capabilities/` or `constraints/` without changing its identifier. Work Item placement under a Work Package is the default physical layout; `part-of` remains the graph authority in the current thirteen-relation contract, and a gate checks that placement agrees with it. Whether placement should eventually make `part-of` derived remains open.
-
-A Source aggregate is independent of every Specification:
-
-```text
-sources/
-├── SOURCE-0001/
-│   └── SOURCE-0001.md
-└── SOURCE-0017/
-    └── SOURCE-0017.md
-```
-
-The Source lives in `sources/` of the lowest Scope that completely owns the curated extract. Its underlying resource remains governed outside the consuming decision boundary. If broader use moves curation to an ancestor Scope, the complete `SOURCE-NNNN/` directory moves while its identifier and principal filename remain unchanged.
-
-When a Scope first accepts Canon, the same promotion materializes its generated `index.md`. From then on the index records its Charter digest, local Specifications, local Sources and immediate child Scopes. It does not flatten every descendant into one file; agents descend through the index tree within PRINCIPLE-00. An empty constituted Scope has no persisted index because git does not represent its empty Canon collections.
-
-Scope is a property of placement. It appears in neither the identifier nor the frontmatter: reorganizations move artifacts between scopes, an identifier that changes is not an identifier, and a declared scope is a second copy of something the path already says.
+Scope is a property of placement. It appears in neither the identifier nor the artifact representation: reorganizations move artifacts between scopes, an identifier that changes is not an identifier, and a declared scope is a second copy of something the path already says.
 
 ### 4.5 The Canon and the repositories
 
@@ -397,15 +361,16 @@ Two bodies of work, and one seam between them.
 
 ```text
   CANON                      THE SEAM                     CODE
-  specs/ and sources/        three links, nothing else    code repositories
+  docs/specs and             typed links                  code repositories
+  docs/sources
   inside each Scope
   ─────────────────────────  ─────────────────────────    ───────────────────────
-  Work Item   ───────────►   targets                 ──►  code repository
-  Work Item   ◄───────────   Realizes:               ◄──  commit
-  Work Item   ◄───────────   validation receipt     ◄──  integrated commit
+  Work Item   ───────────►   implementation target   ──►  code repository
+  Work Item   ◄───────────   realization claim       ◄──  implementation revision
+  Work Item   ◄───────────   validation evidence     ◄──  integrated revision
 ```
 
-`targets` is declared once, in the Canon. `Realizes:` is written by the commit. After that immutable commit is judged, a validation authority issues a receipt that names its exact SHA and Work Item. The HQ evaluation manifest consumes the receipt without changing the subject it attests. [Section 9](#9-the-execution-model) defines the last two.
+The implementation target is declared once, in the Canon. An immutable implementation revision carries the realization claim in the form selected by the accepted representation and verification contracts. After that revision is judged, a validation authority issues evidence that identifies the exact implementation subject and Work Item. [Section 9](#9-the-execution-model) defines the semantic boundary without prescribing one implementation mechanism.
 
 The Canon holds no code and a code repository holds no Canon. The Work Item is the only artifact either side names, and the Work Package coordinates Work Items without touching code itself.
 
@@ -413,7 +378,7 @@ Discovery and Design produce nothing in the code world. They may read it, and of
 
 That reading is also why the Decision class exists. If every Design had to re-derive the standing commitments from source, PRINCIPLE-00 would fail on the first attempt. A Decision records what was committed to and what was rejected, so the next Design reads the Canon instead of the repository.
 
-**The framework governs the Canon completely, and the code world at one point.** That point is the commit, which declares the Work Item it realizes. Everything else about how code is written belongs to the code repository: language, architecture, test strategy, packaging, deployment and branching model.
+**The framework governs the Canon completely, and the code world at one point.** That point is the immutable implementation revision, which declares the Work Item it realizes. Everything else about how code is written belongs to the code repository: language, architecture, test strategy, packaging, deployment and branching model.
 
 ## 5. Definitions
 
@@ -425,7 +390,7 @@ Terms coined or given a specific meaning by Integral. Where a term is borrowed, 
 An operating system for agentic product development: the framework defined by this document.
 
 **HQ**
-The single repository an agent enters the system through. Its root `charter.md` constitutes the authority under which its Canon may exist. Once Canon materializes, its root `index.md` resolves every artifact identifier. It is also the root Scope, so its `specs/` and `sources/` hold whatever Canon no child Scope completely owns. An agent never enters by opening an isolated repository with no product context.
+The single repository an agent enters the system through. Its root `charter.md` constitutes the authority under which its Canon may exist. Once Canon materializes, its `docs/index.md` resolves every artifact identifier. It is also the root Scope, so its `docs/specs/` and `docs/sources/` hold whatever Canon no child Scope completely owns. An agent never enters by opening an isolated repository with no product context.
 
 **Charter**
 The mandatory `charter.md` at the root of an HQ or Scope. It states why its containing jurisdiction exists, what it includes and excludes, the authority under which it may promote Canon and how its foundations may change. It is structural authority, not a Canon artifact, carries no `CHARTER-NNNN` identity and is never inherited in place of a local Charter. Exactly one exists per HQ or Scope; a directory without one is not a Scope.
@@ -434,19 +399,19 @@ The mandatory `charter.md` at the root of an HQ or Scope. It states why its cont
 The non-canonical, exploratory, personal half of the system. Heterogeneous by design and typically not version-controlled. A Scope may expose it through a gitignored `discovery/` directory, but Integral prescribes nothing below that boundary. It holds raw signal and the convergence passes over it.
 
 **Canon**
-The curated, shared, version-controlled body of artifacts that are authoritative within their declared domain under the containing Scope's Charter. Inside a Scope it is exactly the union of `specs/` and `sources/`. Only promoted knowledge enters it; `charter.md`, `index.md` and `discovery/` are not Canon artifacts.
+The curated, shared, version-controlled body of artifacts that are authoritative within their declared domain under the containing Scope's Charter. Inside a Scope it is exactly the union of `docs/specs/` and `docs/sources/`. Only promoted knowledge enters it; `charter.md`, `docs/index.md` and `discovery/` are not Canon artifacts.
 
 **Promotion**
-The HQ-serialized guarded event by which an artifact crosses from Discovery Space into the Canon, or by which a Specification or Source advances to a new baseline. Candidate content may live in the HQ or a split scope repository, but only the HQ promotion gate accepts it into the global Canon. Promotion is a consistency boundary, not a workflow status and not a file move. It assigns the canonical identifier and records the accepted evaluation manifest.
+The HQ-serialized guarded event by which an artifact crosses from Discovery Space into the Canon, or by which a Specification or Source advances to a new baseline. Candidate content may live in the HQ or a split scope repository, but only the HQ promotion boundary accepts it into the global Canon. Promotion is a consistency boundary, not a workflow status and not a file move. Its representation and verification contracts preserve global identity and the accepted revision.
 
 **Gate**
 A deterministic, computable check over declared inputs that blocks a promotion when a declared condition fails. Given the same validator version and the same inputs, it always produces the same result. A check requiring judgment is a review, not a gate.
 
 **Review**
-A judgment about whether something is right, recorded as an immutable attestation so that a gate can read that it happened. A review is not deterministic and never becomes a gate. At the execution seam, its receipt names the exact integrated commit SHA, Work Item, accepted or rejected verdict, authority, actor and time. The receipt lives outside the subject it attests and is anchored by the HQ evaluation manifest, avoiding a self-referential commit while remaining independent of a forge.
+A judgment about whether something is right, recorded as immutable evidence so that deterministic verification can establish that it happened. A review is not deterministic and never becomes a gate. At the execution seam, its evidence identifies the exact implementation subject, Work Item, verdict, authority, actor and time. It lives outside the subject it attests and must remain independently verifiable.
 
 **Baseline**
-The current agreed revision of a Specification or Source, expressed as an explicit semantic integer. The integer is not a git commit: raising it is a deliberate act, so a typo does not create a revision. The generated baseline ledger binds each `id@baseline` to its HQ promotion revision, content digest and resolved upstream baseline set, so the same baseline can never name different content. Downstream artifacts declare which baseline they were derived from.
+The current agreed semantic revision of a Specification or Source. It is not merely a repository revision: raising it is a deliberate act. A baseline must resolve immutably to the complete accepted meaning it names, including upstream Specification baselines where applicable. Downstream artifacts identify the exact baseline on which their meaning depends.
 
 **Digital Thread**
 The traversable chain of provenance from intent to verified runtime capability. Borrowed from product lifecycle management in manufacturing, where it names the same idea applied to physical goods.
@@ -475,7 +440,9 @@ Something already true that this work cannot violate: a regulation, a standing c
 A Constraint always serves an Intent, and the test is worth stating: **if you cannot name the Intent a Constraint serves, you do not have a Constraint.** You have a preference, which belongs in a Decision, or an observation, which belongs in a Source. _The payment provider caps 100 requests per second_ is an observation about the world. _Our checkout stays under that cap_ is the Constraint, and it serves the Intent that checkout works.
 
 **Source**
-A separately governed authority or body of evidence plus what this framework extracted from it: a regulation, an internal policy owned in GRC, a paper, a vendor benchmark or an incident report. The relevant boundary is the consuming work's decision authority, not the organization's perimeter. The artifact is not the underlying source. It is the citation and the extract, so it still answers _what did we read, who governs it, and what did we take from it_ on the day the URL dies. Artifacts cite it with `informed-by`.
+A separately governed authority or body of evidence plus what this framework extracted from it: a regulation, an internal policy owned in GRC, a paper, a vendor benchmark or an incident report. The relevant boundary is the consuming work's decision authority, not the organization's perimeter. The artifact is not the underlying resource. It preserves durable citation, an extract in this framework's words, its applicability and when it was consulted, so its meaning survives an unavailable resource. A locator is optional and may identify a URI or file inside or outside the HQ.
+
+Not every Specification or Decision requires a Source. Tacit knowledge is valid input, and Integral never requires a fabricated citation merely to satisfy structure. When a separately governed authority materially informs an artifact, however, the canonical Source and the exact baseline used belong in the graph.
 
 **Requirement**
 A condition, behavior or property that must hold for a Capability to be correctly fulfilled. Precise, verifiable, and free of solution choices. Where a Constraint is already true, a Requirement is what this work must make true.
@@ -494,36 +461,36 @@ The orchestrator for the Work Items required by one Specification baseline. Thro
 > **Work Item is the unit of implementation. Work Package is the unit of coordination.**
 
 **Implementation**
-The concrete technical form of the work: source, configuration, migrations, infrastructure, tests. Implementation is code. It is referenced by the Canon, never held in it.
+The concrete technical form of the work: source code, configuration, migrations, infrastructure and tests. Implementation is code. It is referenced by the Canon, never held in it.
 
 ### 5.3 Structural terms
 
 **Artifact**
-A unit of curated knowledge with a stable identity, a declared type, and typed relations to other artifacts.
+A canonical semantic or coordination unit with a stable identity, a declared class and typed relations to other artifacts.
 
 **Scope**
-A jurisdictional node of conceptual ownership in the tree hanging off the HQ, constituted by exactly one `charter.md` at its root. Scopes nest. A Scope is a directory inside the HQ by default, and may be a repository of its own when an operational boundary requires it. A child belongs to its parent by directory nesting. Canon ownership is derived from the nearest containing Scope and its reserved `specs/` or `sources/` collection, never declared in artifact frontmatter.
+A jurisdictional node of conceptual ownership in the tree hanging off the HQ, constituted by exactly one `charter.md` at its root. Scopes nest. A Scope is a directory inside the HQ by default, and may be a repository of its own when an operational boundary requires it. A child belongs to its parent by directory nesting. Canon ownership is derived from the nearest containing Scope and its reserved `docs/specs/` or `docs/sources/` collection, never declared in an artifact.
 
 **Code repository**
-A version-control boundary holding implementation and repository-local supporting material. It registers into exactly one scope, it never holds a canonical Integral artifact, and a Work Item names it in `targets`. Nothing enters it that does not declare the Work Item it realizes. The HQ is a repository too, and so is a scope that has been split out; _code repository_ names the kind that carries no Canon.
+A version-control boundary holding implementation and repository-local supporting material. It registers into exactly one Scope, it never holds a canonical Integral artifact, and each Work Item identifies exactly one such repository as its target. Every governed change declares the Work Item it realizes. The HQ is a repository too, and so is a Scope that has been split out; _code repository_ names the kind that carries no Canon.
 
 **Composed identifier**
-An identifier built from its origin: `SPEC-0017-REQ-0003`. It states **origin, not ownership**. Origin is immutable, because the past does not change; ownership is not, because a Decision written for one Specification may end up governing three.
+An identifier built from its origin: `SPEC-0017-REQ-0003`. It states **origin, not ownership**. Origin is immutable because the past does not change; Scope ownership may change when responsibility for the same subject moves.
 
 **Index**
-The generated `index.md` at the root of every HQ and Scope that holds materialized Canon. It maps identifier to location, class, Scope and declared `status`, records the containing Charter digest, and lists local Specifications, local Sources and immediate child Scopes. It is derived by scanning the tree and never maintained by hand. The first ordinary promotion materializes it; later gates regenerate it deterministically and reject a persisted index that differs from the generated result. The index also materializes each Specification's derived constraint coverage and the repositories registered into each Scope.
+The generated `docs/index.md` of every HQ and Scope that holds materialized Canon. It is the bounded navigation entry point for that Scope and is derived rather than maintained by hand. The accepted representation and verification Specifications define its exact contents and how equality with the Canon is checked.
 
 **Authority**
 The single authority that owns a given fact or grants a decision boundary. Canonical documents reference authoritative facts rather than copying them, and never replace the system that holds them. The API contract's authority is the OpenAPI document; the deployment state's authority is the deployment system; the Requirement's authority is the Specification; the Scope's right to govern that Requirement comes from its own `charter.md` and the parent acceptance chain.
 
-**Derivation, Reference, Coordination, Lifecycle**
-The four genera of relation. Only Derivation propagates staleness; the rest order execution, cite context, or change state.
+**Derivation, Reference, Membership, Coordination, Lifecycle**
+The five genera of relation. Only Derivation propagates staleness; the rest cite context, establish immediate containment, order execution, or change lifecycle.
 
 ## 6. The artifact model
 
 ### 6.1 Eight classes
 
-The Canon holds exactly eight classes. The filter that produces this list: _is this curated knowledge, or is it divergence, or is it an external authority?_
+The Canon holds exactly eight classes. They are the stable semantic and coordination units the graph must identify; Implementation remains outside the Canon.
 
 | Class             | Holds                                                                             | Identifier           |
 | ----------------- | --------------------------------------------------------------------------------- | -------------------- |
@@ -545,32 +512,33 @@ Intent and Outcome appear once per Specification and carry no identifier. Nothin
 | Everything decided inside a Specification's authority | An Intent above it     |
 | A Source governed outside that decision boundary      | The edges that cite it |
 
-A Source is not decided inside the consuming boundary, so no Intent in that boundary stands over it. The underlying authority may be an external regulation or an internal policy decided and maintained by another body. The Source artifact exists while something cites it and is dead weight the day nothing does. One policy or paper may inform work across several Specifications, so composing it against one would state an origin that is not true.
+A Source is not decided inside the consuming boundary, so no Intent in that boundary stands over it. The underlying authority may be an external regulation or an internal policy decided and maintained by another body. A Source is created when preserving that authority or evidence has value; it is not mandatory for tacit knowledge and need not be tied to one consumer. One policy or paper may inform work across several Specifications, so composing it against one would state an origin that is not true.
 
-Every class other than Specification and Source composes, Constraint included. A Constraint with no Intent above it has no reason to exist, and §5.2 makes that a test rather than a style note.
+Every class other than Specification and Source uses an identifier composed from its Specification of origin, Constraint included. A Constraint with no Intent above it has no reason to exist, and §5.2 makes that a test rather than a style note.
 
 Six things that look like current Canon artifact classes and are not:
 
-| Not a class      | Where it actually lives                                                      |
-| ---------------- | ---------------------------------------------------------------------------- |
-| Test             | Code. The criterion is the Requirement's `verification` field                |
-| Runtime Evidence | External authority. Receipts feed the Work Package's derived `verified` view |
-| Implementation   | Code. Linked by the Work Item's derived `realized-by`                        |
-| Scope            | Placement, and placement is derived                                          |
-| Index            | A generated file, rebuilt from the tree rather than curated                  |
-| Charter          | Mandatory structural authority at the Scope root; not part of Canon          |
+| Not a class      | Where it actually lives                                                 |
+| ---------------- | ----------------------------------------------------------------------- |
+| Test             | Code. The Requirement records the criterion by which it can be verified |
+| Runtime Evidence | External authority. Evidence feeds a derived Work Package view          |
+| Implementation   | Code. Traceable through the Work Item                                   |
+| Scope            | Placement, and placement is derived                                     |
+| Index            | A generated file, rebuilt from the tree rather than curated             |
+| Charter          | Mandatory structural authority at the Scope root; not part of Canon     |
 
-Nothing is lost. Each becomes a field or a pointer to its authority, which is what PRINCIPLE-07 requires. Promoting them to classes would fill the index with thousands of uncurated nodes that age on their own, which PRINCIPLE-00 forbids.
+Nothing is lost. Each remains in its authoritative system or is referenced from Canon, which is what PRINCIPLE-07 requires. Promoting them to classes would fill the index with thousands of uncurated nodes that age on their own, which PRINCIPLE-00 forbids.
 
-The index is worth stating outright, because it is derivable, generated and persisted all at once, and PRINCIPLE-08 forbids exactly that combination inside an artifact. It escapes because **a generated file is not an artifact.** It carries `generated`, nothing declares a relation to it, it holds no identifier of its own, and it is rebuilt rather than edited. PRINCIPLE-08 governs what is curated; a generated file is the output the principle asks for, not a case against it.
+The index is worth stating outright, because it is derivable, generated and persisted all at once, and PRINCIPLE-08 forbids exactly that combination inside an artifact. It escapes because **a generated file is not an artifact.** Its representation identifies it as generated, nothing declares a relation to it, it holds no identifier of its own, and it is rebuilt rather than edited. PRINCIPLE-08 governs what is curated; a generated file is the output the principle asks for, not a case against it.
 
 ### 6.2 Cardinality
 
 ```text
 Specification 1 ─── 1..N  Capability
 Specification 1 ─── 0..N  Constraint
+Specification 1 ─── 0..N  Requirement
 Specification 1 ─── 0..N upstream Specification baselines  (through based-on)
-Capability    1 ─── 1..N  Requirement
+Requirement  1 ─── 1..N  Capability       (of the same Specification)
 Specification 1 ─── 0..N  Decision
 Specification baseline 1 ─── 0..1  Work Package
 Work Package  1 ─── 1..N  Work Item        (each WI belongs to exactly one WP)
@@ -581,145 +549,28 @@ Work Item     1 ─── 1     target code repository
 
 At most one Work Package exists for a Specification baseline, and only when reevaluation finds implementation work to perform. A semantic change that the current implementation already satisfies creates no Work Package and does not reopen completed work.
 
-These are coverage cardinalities, not a requirement that the numbers of Requirements, Decisions and Work Items be equal. A Decision is optional; a Work Item does not need a ceremonial Decision in order to implement a Requirement. Every new or adapted Work Item caused by a Decision declares `follows`, and one Decision may require several such Work Items when implementation crosses repository boundaries. A future retrospective-conformance mechanism may allow a Decision that adopts an already conforming implementation to have no Work Item, but that exception is not active until its portable receipt is defined. A Work Package and all of its Work Items remain within one Specification: `implements`, `follows` and `part-of` never cross that origin. Cross-Specification execution order uses `depends-on` and does not move either Work Item out of its own Work Package. Reevaluation places a Capability inside the new Work Package when one or more of its Requirements require new or adapted Work Items; a Capability whose current realized Work Items remain valid stays outside that Work Package. At completion, the set of Work Item identities planned through `part-of` must be exactly equal to the set of realized Work Item identities. The equality is over Work Items, not over commits or implementation fragments.
+These are coverage cardinalities, not a requirement that the numbers of Requirements, Decisions and Work Items be equal. A Decision is optional; a Work Item does not need a ceremonial Decision in order to implement a Requirement. Every new or adapted Work Item caused by a Decision declares that dependency, and one Decision may require several such Work Items when implementation crosses repository boundaries. A future retrospective-conformance mechanism may allow a Decision that adopts an already conforming implementation to have no Work Item, but that exception is not active until its portable evidence is defined.
 
-A Source has no composition cardinality here at all: it is cited by any number of artifacts and belongs to no Specification. Its curated artifact aggregate is owned by the Scope containing its `sources/` directory; the underlying resource remains under its separately governed authority.
+A Requirement, Decision and Work Package declare immediate membership in exactly one Specification baseline; a Work Item declares immediate membership in exactly one Work Package. The latter resolves transitively to the same Specification baseline, so membership does not need to be duplicated on the Work Item. Cross-Specification execution order does not move either Work Item out of its own Work Package. Reevaluation places a Capability inside the new Work Package when one or more of its Requirements require new or adapted Work Items; a Capability whose current realized Work Items remain valid stays outside that Work Package. At completion, the planned and realized Work Item identity sets must be equal; the equality is over Work Items, not commits or implementation fragments.
 
-### 6.3 The frontmatter contract
+A Source has no composition cardinality here at all: it is cited by any number of artifacts and belongs to no Specification. Its canonical artifact is owned by the Scope containing its `docs/sources/` collection; the underlying resource remains under its separately governed authority.
 
-Every artifact has `id`, `type` and `status`. A file-backed artifact declares all three explicitly. An inline Capability or Constraint declares its own stable `id`, derives `type` from the collection that contains it (`capabilities` or `constraints`), and inherits the lifecycle `status` of its containing Specification. Each class adds its own fields.
+### 6.3 Representation authority
 
-The principal file of each root aggregate repeats its identifier in the filename: `specs/SPEC-0017/SPEC-0017.md` and `sources/SOURCE-0001/SOURCE-0001.md`. Composed file-backed artifacts follow the same directory-and-principal-file convention inside their Specification aggregate. Paths make the corpus predictable; graph relations still use identifiers.
+The Charter defines what each artifact means and the invariants the Canon must preserve. It does not freeze a serialization format, metadata field set, body template, filename convention, lifecycle vocabulary or validation algorithm. Accepted Specifications own those implementation contracts:
 
-```yaml
-# Specification
-id: SPEC-0017
-type: specification
-baseline: 3
-status: stable
-capabilities:
-  - id: SPEC-0017-CAP-0001
-    title: Verify customer identity
-constraints:
-  - id: SPEC-0017-CON-0001
-    title: Biometric data never leaves the region it was captured in
-```
+- the representation Specification defines artifact structure, fields, relation serialization, aggregate layout, index shape and lifecycle vocabularies;
+- the verification Specification defines deterministic checks, state transitions, evidence contracts and promotion behavior.
 
-Required: Intent, Outcome, and at least one Capability. A Specification declares no downward relation. Descendants declare provenance upward, so adding a Decision, Work Package or Work Item never edits or advances the Specification. Capability, Constraint and Requirement are different: together with Intent and Outcome they are the content the Specification baseline names, so changing any of them advances that baseline.
+Changing either contract within these constitutional boundaries requires a new Specification baseline, not a Charter amendment. A representation change requires an amendment only when it changes the ontology, authority, identity, ownership, membership or traceability semantics stated here.
 
-**Granularity is placement, not class.** A Capability or a Constraint is indexed by its identifier whether it sits inline in its Specification, as above, or in a file of its own. The index resolves the identifier to a location, so splitting an inline element into a file changes the location and never the identifier. That is PRINCIPLE-04 doing its work. Split when PRINCIPLE-00 says the file stopped being reachable, not before.
+Every canonical artifact must expose a stable identity, its class, its lifecycle and its typed relations in a machine-readable form selected by the representation Specification. Specification and Source carry semantic baselines. The representation Specification decides which semantic constituents are inline and which Canon classes are represented separately.
 
-```yaml
-# Source
-id: SOURCE-0001
-type: source
-baseline: 1
-status: stable
-resource: https://eur-lex.europa.eu/eli/reg/2016/679/oj
-citation: Regulation (EU) 2016/679, Article 44
-extract: Personal data may leave the region only under an adequacy
-  decision or an approved safeguard.
-retrieved: 2026-02-04
-```
+Work Package and Work Item additionally carry exactly one explicit execution status for coordination. That status is not the artifact lifecycle and does not establish realization, validation or runtime verification; those remain evidence-backed facts. The representation Specification defines the allowed status vocabulary, and the verification Specification defines any permitted transitions.
 
-```yaml
-# Requirement
-id: SPEC-0017-REQ-0003
-type: requirement
-status: stable
-specifies: [SPEC-0017-CAP-0001]
-verification: Liveness check rejects a static photograph and accepts a live capture.
-```
+Work Package and Work Item are the artifacts a development agent receives as orders of work, so their accepted representations must provide the complete context needed to coordinate or execute them without depending on external navigation. The representation Specification decides how those self-contained projections are constructed. Other artifacts need not duplicate their dependencies and may use resolvable links.
 
-```yaml
-# Decision
-id: SPEC-0017-DEC-0001
-type: decision
-status: stable
-based-on: [SPEC-0017@3]
-satisfies: [SPEC-0017-REQ-0003]
-respects: [SPEC-0017-CON-0001]
-rejected:
-  - provider Y: p99 latency 4x the budget
-  - in-house model: no compliance certification path
-```
-
-`SPEC-0017@3` reads _Specification 017 at baseline 3_. The part before the `@` never changes; the part after it records which revision this Decision was written against. The generated baseline ledger binds that pair to the HQ promotion revision, a digest of the complete Specification content and its exact resolved upstream baseline set.
-
-That second half makes selection for reevaluation computable. A relation that said only _this points at SPEC-0017_ would be true forever and would therefore report nothing. Because the Decision names revision 3, gate G7 compares 3 against the current baseline and selects the Decision for reevaluation when the Specification reaches 4. The `@` is the join between an artifact and the version of the thing it was derived from. A separate reevaluation judgment decides whether the descendant remains valid; G7 checks and consumes the resulting attestation but never makes that semantic judgment itself.
-
-It appears only inside relations, never in an identifier and never in a filename.
-
-`rejected` is what stops an agent reproposing a discarded option six months later. Agents repropose the obvious choice, and the obvious choice is usually the one already ruled out.
-
-```yaml
-# Work Package
-id: SPEC-0017-WP-0001
-type: work-package
-status: stable
-based-on: [SPEC-0017@3]
-verification:
-  - requirement: SPEC-0017-REQ-0003
-    check: The liveness endpoint rejects a static photograph
-    method: repo:identity-service@commit-BBB#scripts/verify/liveness.sh
-    authority: runtime:production-verification
-    environment: production
-```
-
-The Work Package stores **verification conditions**, not their eventual results. `check` says what must be true, the versioned `method` says how to find out again, and `authority` and `environment` say who must attest it and where. Build does not rewrite the stable Work Package. Instead, the authority later issues an immutable receipt containing the Requirement, exact deployed subject, environment, verdict, observation time, actor and method version. The HQ evaluation manifest consumes those receipts and the generated index derives the Work Package's `verified` view. A convenience run URL may accompany a receipt and is understood to rot.
-
-Who runs the check is configuration. Naming a continuous integration system here would prescribe a stack, the same way naming a git flow would.
-
-```yaml
-# Work Item
-id: SPEC-0017-WI-0004
-type: work-item
-status: stable
-based-on: [SPEC-0017@3]
-part-of: [SPEC-0017-WP-0001]
-implements: [SPEC-0017-REQ-0003]
-follows: [SPEC-0017-DEC-0001]
-targets: repo:identity-service
-depends-on: [SPEC-0017-WI-0002]
-```
-
-`realized-by` is absent on purpose. It is derived from commit trailers, never written. See [section 9](#9-the-execution-model).
-
-#### The fields
-
-Half the vocabulary comes from OKF and keeps OKF's meaning. The other half is this framework's. Naming the source of each field costs one column and settles every later argument about whether a field may be changed here.
-
-| Field                         | From     | Means here                                                                                                                                                                                        | Required on                         |
-| ----------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| `id`                          | Integral | The canonical identifier. Assigned at promotion, never reused                                                                                                                                     | every class                         |
-| `type`                        | OKF      | The class, lowercase and hyphenated: `work-item`                                                                                                                                                  | every class                         |
-| `status`                      | OKF      | The lifecycle state. See [section 8.4](#84-baselines-and-staleness)                                                                                                                               | every class                         |
-| `baseline`                    | Integral | For a Specification, the agreed revision of Intent, Outcome, Capability, Constraint and Requirement content plus its resolved `based-on` baseline set; for a Source, its agreed semantic revision | Specification, Source               |
-| `sources`                     | OKF      | What in Discovery Space this was distilled from                                                                                                                                                   | Specification, Decision             |
-| `capabilities`, `constraints` | Integral | The inline elements this Specification owns, each with its identifier                                                                                                                             | Specification, when they are inline |
-| `specifies`                   | Integral | The Capability this Requirement bounds                                                                                                                                                            | Requirement                         |
-| `citation`                    | Integral | What was read, named well enough to find again without the URL                                                                                                                                    | Source                              |
-| `extract`                     | Integral | What this framework took from it, in this framework's words                                                                                                                                       | Source                              |
-| `retrieved`                   | Integral | The date the extract was read out of the reference                                                                                                                                                | Source                              |
-| `verification`                | Integral | The check that decides whether the Requirement holds                                                                                                                                              | Requirement                         |
-| `rejected`                    | Integral | The alternatives that lost, and why each lost                                                                                                                                                     | Decision                            |
-| `targets`                     | Integral | The one code repository the Work Item changes                                                                                                                                                     | Work Item                           |
-| `verification`                | Integral | Conditions binding an affected Requirement and reproducible method to the authority and environment that must verify it                                                                           | Work Package                        |
-| `verified`                    | OKF      | Generated view derived from immutable verification receipts; never written into the Work Package artifact                                                                                         | generated Work Package view         |
-| `generated`                   | OKF      | Marks a file a generator wrote, so nothing edits it by hand                                                                                                                                       | any generated file                  |
-| `stale_after`                 | OKF      | An expiry the index reads without traversing the graph                                                                                                                                            | optional, any class                 |
-| `tags`                        | OKF      | Free labels. Carried and never read by a gate                                                                                                                                                     | optional, any class                 |
-| `resource`                    | OKF      | A pointer to the thing the artifact describes                                                                                                                                                     | optional, any class                 |
-
-`informed-by` is optional on every class, and it is meant to stay that way. Most artifacts need no authority outside their own decision boundary, and a required citation field teaches people to invent one to pass the gate. Write a Source when you would otherwise cite a separately governed internal or external authority and expect somebody to act if it changes. Do not write one for something you merely read.
-
-`sources` and `informed-by` are not the same mechanism and do not compete. `sources` points back into Discovery Space, which is untracked, and records what an artifact was distilled from inside its own formation process. `informed-by` points at a Source, which is canonical, and records a separately governed authority the artifact rests on.
-
-The `sources` frontmatter field is also unrelated to the reserved `sources/` directory. The field records Discovery provenance; the directory contains canonical `SOURCE-NNNN` aggregates. The shared spelling comes from OKF for the field and ordinary collection naming for the directory, so validators distinguish them by structural position rather than inventing a synonym.
-
-Relations are frontmatter too, and [section 7.4](#74-the-relation-vocabulary) is their contract. An inline Capability or Constraint carries no frontmatter block of its own: its entry in the Specification's list supplies its own `id`, while collection placement derives `type` and the containing Specification supplies `status`. It gains an explicit frontmatter block without changing identity on the day it becomes a file.
-
-OKF's `index.md` convention is adopted whole. The index is generated, so `generated` is set on every one of them.
+A Source preserves one separately governed authority or evidence body through a durable citation, a self-contained extract, its applicability and the date it was consulted. A resource locator is optional and may point to a URI or file inside or outside the HQ. Referencing a Source identifies the exact Source baseline used. Discovery provenance is optional, non-authoritative context and is distinct from a canonical Source relationship.
 
 ## 7. Identity and the graph
 
@@ -727,32 +578,32 @@ OKF's `index.md` convention is adopted whole. The index is generated, so `genera
 
 A file path answers three questions at once, which is why paths make poor identifiers. Integral separates them.
 
-| Question                     | Answered by              | Lives in    | Stability          |
-| ---------------------------- | ------------------------ | ----------- | ------------------ |
-| What is this?                | `id`                     | Frontmatter | Permanent          |
-| What relates to it, and how? | Typed relations, by `id` | Frontmatter | Follows the graph  |
-| Where is it now?             | Generated index          | Derived     | Volatile by design |
+| Question                     | Answered by            | Lives in | Stability          |
+| ---------------------------- | ---------------------- | -------- | ------------------ |
+| What is this?                | Stable identifier      | Artifact | Permanent          |
+| What relates to it, and how? | Typed relations, by ID | Artifact | Follows the graph  |
+| Where is it now?             | Generated index        | Derived  | Volatile by design |
 
 **The graph never uses paths.** Prose links do, because a markdown link is what a human clicks. Move a file and the graph does not notice; the prose link breaks, a gate reports it, a tool rewrites it. The layer that degrades is the one that can afford to.
 
-**Identity is cheaper than the path.** With paths as identifiers, asking _who implements REQ-0003_ means scanning the tree, and the cost grows with the corpus. With a stable identifier and an index it costs one small file read. The index is also the map an agent loads once to see everything available before opening anything.
+**Identity is cheaper than the path.** With paths as identifiers, asking _who implements REQ-0003_ means scanning the tree, and the cost grows with the corpus. With a stable identifier and an index it costs one bounded navigation read. The index is also the map an agent loads before opening the relevant artifact.
 
 ### 7.2 Identifier rules
 
 | Rule                          | Reason                                                                                                                                                                                                           |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Composed against the origin   | The origin is immutable, so the identifier cannot become a lie                                                                                                                                                   |
-| Sequential with a type prefix | An agent writes these into frontmatter and verifies them by reading                                                                                                                                              |
+| Sequential with a type prefix | An agent can write and verify them directly                                                                                                                                                                      |
 | Assigned at promotion         | Holding a canonical identifier is what being canonical means. The HQ promotion gate serializes assignment across every Canon repository, so parallel candidate branches cannot allocate independently or collide |
-| Never reused                  | A commit recording `Realizes: SPEC-0017-WI-0004` must resolve to the same Work Item forever                                                                                                                      |
+| Never reused                  | An implementation claim naming `SPEC-0017-WI-0004` must resolve to the same Work Item forever                                                                                                                    |
 | Never contains the scope      | Reorganization moves artifacts between scopes                                                                                                                                                                    |
 | Never contains the baseline   | The baseline is state, the identifier is origin                                                                                                                                                                  |
 
-**The frontmatter does not carry the Scope either.** For an artifact under `specs/` or `sources/`, the owner is the nearest ancestor directory carrying `charter.md`. The path already states it and the index already derives it. A field that repeats what is derivable is a field that can disagree with it, and on the day the two disagree there is no rule saying which one wins.
+**The artifact does not declare its Scope either.** For an artifact under `docs/specs/` or `docs/sources/`, the owner is the nearest ancestor directory carrying `charter.md`. Placement already states it and the index already derives it. A field that repeats what is derivable is a field that can disagree with it, and on the day the two disagree there is no rule saying which one wins.
 
 The one case a `scope:` field would win is an artifact filed in one place and belonging to another. That is exactly the state the placement rule exists to forbid, so winning that case is not a feature.
 
-Moving a canonical artifact between Scopes is therefore a move of its complete aggregate directory between the corresponding `specs/` or `sources/` collections, and it needs a Decision recording why. A gate reads the index before and after, and rejects a move that no Decision accounts for.
+Moving a canonical artifact between Scopes is therefore a move of its complete representation, including any aggregate, between the corresponding `docs/specs/` or `docs/sources/` collections, and it needs a Decision recording why. Verification compares the index before and after and rejects a move that no Decision accounts for.
 
 Two consequences worth stating outright:
 
@@ -762,51 +613,55 @@ Two consequences worth stating outright:
 
 `SPEC-0017` in full is `<hq>:SPEC-0017`; the prefix is omitted when it resolves against the current HQ. Nothing writes it and nothing parses it today. Reserving the grammar costs one line and is what keeps every existing identifier valid on the day two HQs have to coexist.
 
-### 7.3 Which way edges are declared
+### 7.3 Authority of relationship facts
 
-> **Provenance is declared upward. Navigation is derived downward. Composition is never declared at all.**
+> **A dependency belongs to the dependent; membership belongs to the constituent. Navigation is derived. Origin is encoded in the identifier.**
 
-Every dependency edge is declared by the artifact whose meaning or execution depends on the target. It owns the dependency claim. The creation order of artifact identities is irrelevant, but the revision that introduces the edge may be promoted only against a target revision that already exists. An existing artifact may therefore acquire a dependency on a newer upstream artifact during reevaluation, while no relation may manufacture retroactive provenance.
+Every dependency fact is authoritative at the artifact whose meaning or execution depends on the target. Every membership fact is authoritative at the constituent whose immediate parent it identifies. The representation Specification may choose how those facts are serialized, but it may not create a second authority by requiring the target or parent to maintain the inverse. The creation order of artifact identities is irrelevant, but a new relationship may be promoted only against a target that already exists. An existing artifact may therefore acquire a dependency on a newer upstream artifact during reevaluation, while no relationship may manufacture retroactive provenance.
 
 This is not a stylistic choice. If a target had to list the artifacts that depend on it, writing a Decision would edit the Specification, which raises its baseline and needlessly sends every downstream artifact through reevaluation. **A baselined artifact would be reopened by the act of something being built from it.**
 
-Downward edges are computed by inverting the declared ones. That inverted map is what an agent navigates, so declaring upward costs downward navigation nothing.
+Reverse navigation is computed from the authoritative facts. That inverted map is what an agent navigates, so preserving one authority costs downward navigation nothing.
 
-Composition is not declared because the composed identifier already states it. `SPEC-0017-REQ-0003` says the Specification contains it, with no field that can disagree with the identifier.
+A composed identifier records where an artifact originated; it does not declare current membership. Immediate membership is explicit so an artifact may move without changing identity. For a Work Item, following its Work Package membership and then that package's Specification membership resolves the governing Specification baseline transitively.
 
 ### 7.4 The relation vocabulary
 
-| Relation         | Genus        | Declared by                     | Points at                                                         | If the target changes, the source...                                                                        |
-| ---------------- | ------------ | ------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `based-on`       | Derivation   | Specification, Decision, WP, WI | `SPEC-NNNN@B`; from a Specification, any number of upstream bases | is reevaluated; goes stale only if it no longer holds                                                       |
-| `specifies`      | Derivation   | Requirement                     | Capability                                                        | is reevaluated; goes stale only if it no longer holds                                                       |
-| `respects`       | Derivation   | Decision                        | Constraint                                                        | is reevaluated; goes stale only if it no longer holds                                                       |
-| `narrows`        | Derivation   | Constraint                      | Constraint                                                        | is reevaluated; goes stale only if it no longer holds                                                       |
-| `informed-by`    | Derivation   | any                             | Source                                                            | is reevaluated; goes stale only if it no longer holds                                                       |
-| `satisfies`      | Derivation   | Decision                        | Requirement                                                       | is reevaluated; goes stale only if it no longer holds                                                       |
-| `implements`     | Derivation   | Work Item                       | Requirement of the same Specification                             | is reevaluated; goes stale only if it no longer holds                                                       |
-| `follows`        | Derivation   | Work Item                       | an existing Decision of the same Specification                    | is prospective provenance; the Work Item is reevaluated and goes stale only if the Decision no longer holds |
-| `references`     | Reference    | any                             | any                                                               | nothing                                                                                                     |
-| `depends-on`     | Coordination | Specification, Work Item        | Specification@B from Specification; Work Item from Work Item      | nothing; it orders promotion or execution                                                                   |
-| `conflicts-with` | Coordination | Work Item                       | Work Item                                                         | nothing; it feeds the owning agent's schedule                                                               |
-| `part-of`        | Coordination | Work Item                       | exactly one Work Package of the same Specification                | nothing                                                                                                     |
-| `supersedes`     | Lifecycle    | the new artifact                | the retired one                                                   | nothing; the target is frozen                                                                               |
+The labels below state the semantic model in this Charter; they are not required serialized field names. The representation Specification owns their concrete names, direction and scalar or sequence shape while preserving these connections and effects.
 
-A relation that points at an artifact carrying its own baseline names the revision directly: `SPEC-0017@3`, `SOURCE-0001@1`. A relation to a composed artifact names its stable identifier. From a Specification, `based-on` names zero or more upstream bases and establishes a non-exclusive Constraint-inheritance hierarchy. A Work Package and Work Item pin only the baseline of the Specification they belong to; a Decision pins every Specification baseline required by its Derivation relations. The gate rejects a downstream artifact whose Derivation targets are not covered by the permitted baseline pins.
+| Conceptual label | Genus        | Semantic connection                                                            | Effect of change                                                                                   |
+| ---------------- | ------------ | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| `based-on`       | Derivation   | Specification to upstream Specification baseline; Decision to earlier Decision | reevaluate the dependent artifact; stale only if it no longer holds                                |
+| `specifies`      | Derivation   | Requirement to one or more Capabilities of the same Specification              | reevaluate the Requirement; stale only if it no longer holds                                       |
+| `respects`       | Derivation   | Decision to Constraint                                                         | reevaluate the Decision; stale only if it no longer holds                                          |
+| `narrows`        | Derivation   | Constraint to Constraint                                                       | reevaluate the narrower Constraint; stale only if it no longer holds                               |
+| `informed-by`    | Derivation   | Canon artifact to exact Source baseline                                        | reevaluate the dependent artifact; stale only if it no longer holds                                |
+| `satisfies`      | Derivation   | Decision to Requirement                                                        | reevaluate the Decision; stale only if it no longer holds                                          |
+| `implements`     | Derivation   | Work Item to Requirement of the same Specification                             | reevaluate the Work Item; stale only if it no longer holds                                         |
+| `follows`        | Derivation   | Work Item to Decision of the same Specification                                | prospective provenance; reevaluate the Work Item and stale it only if the Decision no longer holds |
+| `references`     | Reference    | any Canon artifact to any Canon artifact                                       | no propagation                                                                                     |
+| `part-of`        | Membership   | constituent to immediate canonical parent                                      | establish membership and baseline context without propagating staleness                            |
+| `depends-on`     | Coordination | Specification to upstream baseline, or Work Item to Work Item                  | order promotion or execution without propagating staleness                                         |
+| `conflicts-with` | Coordination | Work Item to Work Item                                                         | inform scheduling without propagating staleness                                                    |
+| `supersedes`     | Lifecycle    | new artifact to retired artifact                                               | freeze the retired artifact without propagating staleness                                          |
 
-Thirteen declarable relations. The governing rule:
+A relation that points at a Specification or Source names the exact baseline when that revision matters. `based-on` has two distinct typed uses: a Specification may name zero or more upstream Specification baselines, establishing a non-exclusive Constraint-inheritance hierarchy; a Decision may name the earlier Decisions whose commitments condition it. Decision membership, not a generic Specification dependency, supplies its governing Specification baseline.
+
+`part-of` identifies the immediate canonical parent. Requirement, Decision and Work Package each point to exactly one Specification baseline. Work Item points to exactly one Work Package of the same Specification and resolves its Specification baseline transitively. Capability and Constraint membership is intrinsic to the Specification that holds them and requires no separate membership relation. On a Specification baseline advance, every continuing constituent's membership is updated mechanically to the new baseline; accepted history preserves prior membership without weakening the current graph.
+
+Thirteen semantic relations. The governing rule:
 
 > **A relation type exists to answer one question: if the other end changes, what happens to me? Two types with the same answer are one type with two names.**
 
-`contains` and `blocks` are absent by application of that rule. `contains` is stated by the identifier; `blocks` is the inverse of `depends-on`, and declaring both puts one fact in two places.
+`contains` and `blocks` are absent by application of that rule. `contains` is the inverse of immediate membership; `blocks` is the inverse of execution dependency. Declaring either would put one fact in two places.
 
 Everything derived, and the three different places it is derived from:
 
-| Derived by                    | Examples                                                                                                                                                             |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Inverting the declared graph  | `contains`, `blocks`, `specified-by`, `respected-by`, `narrowed-by`, `informs`, `satisfied-by`, `implemented-by`, `superseded-by`                                    |
-| Shared Specification identity | `constrained-by` from every separate Requirement, Decision and Work Item to each Constraint of that Specification                                                    |
-| Reading an external authority | `realized-by` from commit trailers, `validated` from validation receipts, `verified` from runtime verification receipts, deployment state from the deployment system |
+| Derived by                    | Examples                                                                                                                              |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Inverting the declared graph  | `contains`, `blocks`, `specified-by`, `respected-by`, `narrowed-by`, `informs`, `satisfied-by`, `implemented-by`, `superseded-by`     |
+| Shared Specification identity | `constrained-by` from every separate Requirement, Decision and Work Item to each Constraint of that Specification                     |
+| Reading an external authority | realization from implementation history, validation and verification from their evidence, deployment state from the deployment system |
 
 **Only the Derivation genus feeds impact analysis.** This is what makes impact analysis useful rather than merely available. Untyped edges return the neighborhood, which grows with the corpus while the real impact does not.
 
@@ -830,30 +685,29 @@ Two reevaluation candidates out of five neighbors. Deterministic traversal selec
 
 Promotion is the only way knowledge enters or advances in the Canon. It is a consistency boundary: crossing it asserts that the Canon is not knowingly inconsistent with what it describes.
 
-Constituting a Scope is the structural event immediately before that rule can apply there. Genesis is the accepted git revision that introduces the HQ's root `charter.md`; an accepted revision introducing a child `charter.md` creates a child Scope under the authority of its parent. A directory cannot receive a Specification or Source promotion before that event. Git does not represent empty collections, so `specs/`, `sources/` and the first generated `index.md` materialize with the Scope's first ordinary promotion rather than pretending to exist at Genesis. A separate portable authorization record is required only when authority crosses repository boundaries; it must never masquerade as ordinary artifact promotion.
+Constituting a Scope is the structural event immediately before that rule can apply there. Genesis is the accepted git revision that introduces the HQ's root `charter.md`; an accepted revision introducing a child `charter.md` creates a child Scope under the authority of its parent. A directory cannot receive a Specification or Source promotion before that event. Git does not represent empty collections, so `docs/specs/`, `docs/sources/` and the first generated `docs/index.md` materialize with the Scope's first ordinary promotion rather than pretending to exist at Genesis. A separate portable authorization record is required only when authority crosses repository boundaries; it must never masquerade as ordinary artifact promotion.
 
 ```text
 Discovery Space              ──distill──►  gates  ──►  Baselined Specification
-Specification + exploration  ──distill──►  gates  ──►  Baselined Decisions + build-ready Work Package when implementation must change
+Specification + exploration  ──distill──►  gates  ──►  Decisions and build-ready Work Package associated with its baseline when implementation must change
 Work Package + code          ──verify───►  gates  ──►  Affected capabilities implemented and externally verified in production
 ```
 
 ### 8.2 Promotion gates
 
-Eight groups, all deterministic over declared inputs anchored by one immutable **HQ evaluation manifest**. The manifest names the validator version, a fixed `evaluated-at` instant, the candidate or inherited accepted SHA of every Canon repository, the digest of the previous accepted manifest, the code-repository revisions read for execution state, and the immutable receipts supplied by external authorities. Unchanged Canon repositories inherit through the previous manifest digest but resolve to explicit SHAs in the complete manifest view. The generated index is one input and one output of evaluation; it is not the complete input set. Given the same manifest, neither a moving repository, authority nor clock can change the result.
+Promotion is guarded by deterministic verification over immutable declared inputs. The Charter requires the following invariants; the accepted verification Specification formalizes their algorithms, manifests, evidence schemas and diagnostics:
 
-| Group                        | Checks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **G1 Referential integrity** | Every referenced identifier and pinned baseline resolves through the baseline ledger. Every composed prefix resolves to an existing origin. Each aggregate directory and principal filename equal the artifact identifier. A revision introducing a dependency names a target present in the accepted manifest it builds on. No duplicates. No reuse after retirement. The HQ serializes identifier assignment and acceptance of the resulting manifest                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| **G2 Structure**             | The HQ and every Scope have exactly one root `charter.md`; a directory without the Charter is not a Scope. Every Scope with materialized Canon has exactly one generated `index.md`. Canon artifacts occur only under `specs/` or `sources/`; `discovery/` is excluded. A Specification has Intent, Outcome, at least one Capability and zero or more upstream Specification baselines through `based-on`. A Requirement declares `verification` and exactly one `specifies`. A Work Item declares exactly one `part-of`, exactly one `targets` and at least one `implements`; its physical Work Package aggregate agrees with `part-of`, and its Work Package, Requirements and followed Decisions belong to the same Specification. A Work Package and Work Item pin only that Specification baseline through `based-on`. A Decision pins every Specification baseline required by its Derivation relations                                |
-| **G3 Typing**                | Every relation is one of the thirteen. Each target is of a class that relation admits. No derived relation is declared by hand                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| **G4 Coverage**              | For every baseline, each Requirement is covered by a current valid realized Work Item of the same Specification or by at least one planned Work Item that `implements` it. Every Decision that causes new or adapted implementation has at least one such Work Item declaring `follows`. The retrospective-conformance exception is not active until its portable receipt is defined; G4 cannot infer conformance from existing code. A Work Package exists only for uncovered work and orchestrates that Work Item set. At completion, every affected Requirement has a passing verification receipt whose authority, environment, exact deployed subject and immutable record resolve through the evaluation manifest. The set of Work Items planned through `part-of` is exactly the set of realized Work Items; each resolves to an accepted integrated implementation carrying its `Realizes:` trailer and a passing validation receipt |
-| **G5 Acyclicity**            | Specification `based-on`, `depends-on` and `supersedes` are acyclic. No artifact composes against its own descendant. It reads no other relation, so several Work Items pointing at one Requirement are a fan and never a cycle                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| **G6 Lifecycle**             | A promoted artifact is never removed, only deprecated. `supersedes: X` requires X to exist and become deprecated in the same promotion. A deprecated artifact accepts no new inbound Derivation relations. An artifact whose scope changed resolves to a Decision recording the move                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| **G7 Freshness**             | Raising a baseline deterministically selects every Derivation-linked descendant whose pinned input changed. When an upstream `based-on` baseline changes, accepting the newly resolved hierarchy advances the affected Specification's baseline even if its local content did not change. G7 never decides whether a descendant still holds: it requires a reevaluation attestation naming the descendant, old and new baseline sets, verdict, authority and time. From those attestations the index derives `current`, `pending-reevaluation` or `stale`; no artifact remains current against an older resolved baseline set without an accepted attestation                                                                                                                                                                                                                                                                                |
-| **G8 Constraint coverage**   | Each Specification inherits transitively the union of effective Constraints from every Specification in its `based-on` graph. Capability and Constraint are evaluated together inside their Specification. Every separate Requirement, Decision and Work Item is derived as `constrained-by` every effective Constraint of its Specification, and that coverage appears in the index. Scope ancestry contributes nothing. A declared `narrows` points to an effective Constraint. G8 checks this structure; semantic strictness and compatibility between inherited Constraints are decided by review                                                                                                                                                                                                                                                                                                                                        |
+- every identifier, baseline and relation target resolves uniquely, and identities are never reused;
+- every Scope and Canon artifact satisfies the accepted representation contract and appears only within its authoritative boundary;
+- every relation is typed, points to an allowed class and is declared only by its authoritative source;
+- Requirements, Decisions and execution work have complete coverage without manufacturing ceremonial artifacts;
+- derivation, membership, coordination and lifecycle graphs satisfy their applicable acyclicity and origin rules;
+- accepted lifecycle history remains resolvable, including deprecated and moved artifacts;
+- a changed derivation input selects every affected descendant for semantic reevaluation, without a deterministic gate pretending to make that judgment;
+- every Specification exposes the coherent transitive set of effective Constraints that governs its constituent work; and
+- completion claims resolve to the required implementation, validation and runtime evidence.
 
-G7 is the only group that also runs on read. A changed declared input can make `pending-reevaluation` appear without a new artifact commit, but the semantic verdict can enter only through a reevaluation attestation.
+Verification may generate navigation, ledgers, manifests and derived freshness or evidence views. Those generated structures never become competing authorities for facts already owned elsewhere. Given the same declared inputs and verifier version, verification must produce the same result.
 
 Three Work Items implementing one Requirement raise a different question, and it is not acyclicity. It is whether they may reach the mainline or become externally available one at a time. [Section 9.1](#91-two-boundaries-not-one) keeps that integration strategy outside the current model.
 
@@ -867,35 +721,19 @@ This boundary is deliberate, and it is also the framework's largest open questio
 
 ### 8.4 Baselines and staleness
 
-**A Specification or Source baseline starts at 1 on its first promotion.** Other artifact classes do not carry a baseline of their own. Before promotion, a Specification or Source has no baseline at all, and OKF's `status` carries the lifecycle on its own. One field per concept: `status` says where in an artifact's life it is, while `baseline` identifies an agreed revision. The boundary is exact: a Specification baseline names its Intent, Outcome, Capabilities, Constraints, Requirements and resolved upstream baseline set. A semantic change to any of those requires promotion as baseline `n+1` through the same HQ gate as baseline `n`. Decisions, Work Packages and Work Items are immutable derivatives promoted against that baseline; creating one does not redefine the Specification, and changing a stable one requires a new or superseding artifact. For a Source, the baseline includes only its own semantic content.
+**Specification and Source are the only artifact classes that carry semantic baselines.** Before first promotion they have no baseline. Artifact lifecycle and semantic revision remain distinct concepts: lifecycle says where an artifact stands, while baseline identifies one agreed meaning. The representation Specification defines how both are encoded and their vocabularies; the verification Specification defines the allowed transitions and checks.
 
-The baseline ledger is generated from HQ promotion history. For each `id@baseline` it records the accepted HQ manifest revision, a digest of the complete content named by that baseline, and the resolved upstream set. A gate rejects content whose digest changed without a baseline increment and rejects reuse of an existing integer for another digest. The semantic integer remains the human-facing revision; the ledger makes its referent immutable.
+A Specification baseline names its Intent, Outcome, inline Capabilities, inline Constraints, Requirements and resolved upstream Specification baseline set. A semantic change to any of those advances the baseline through the same promotion boundary. Decisions, Work Packages and Work Items are derivatives associated with the applicable Specification baseline; creating one does not redefine the Specification. For a Source, the baseline includes only its own semantic content.
 
-```text
-SPEC-0017
-  status: draft        no baseline yet
-  promotion            baseline: 1
-  status: stable       baseline: 2, 3, 4 as it iterates
-  status: deprecated   the baseline stops moving
+Every baseline resolves immutably to accepted content and its upstream baseline set. Verification rejects silent semantic changes and reuse of one baseline for different content. The exact ledger, digest and manifest representations belong to the verification Specification.
 
-SPEC-0017-DEC-0001
-  based-on: [SPEC-0017@3]
-```
-
-`status` takes three values and no more. **`proposed` is not among them.** It presumes two actors and a turn to approve, which is a ceremony between people rather than a state of the artifact. Here whoever thinks it builds it, so nothing sits waiting for a second party to look.
-
-That removal sharpens a question rather than answering it. With no proposing and no approving in the lifecycle, an agent carries an artifact from nothing to promoted alone. Where judgment enters is at the seam instead, in the validation receipt of [section 9.6](#96-merge-gates), and whether that verdict may be an agent's is the open question in [section 12](#12-open-questions).
-
-When `SPEC-0017` reaches v4, the Decision is selected for reevaluation automatically. Nobody writes that derived condition; G7 computes it from the declared baseline and the current one. Until a reevaluation attestation exists the index reports `pending-reevaluation`. An accepted attestation derives `current` against v4; a rejected one derives `stale`. These are freshness states in the index, not additional values of artifact `status`.
-
-An accepted upstream baseline change also advances every affected Specification baseline because its resolved Constraint set changed, even when its local text did not. Reevaluation attestations then record whether the existing Work Items remain valid. If they all do, no Work Package is created; uncovered or stale work produces the Work Package for the new effective baseline.
+When a baseline changes, deterministic graph traversal selects affected Derivation descendants for reevaluation. It does not decide whether they remain valid. The resulting judgment is recorded as immutable evidence, from which freshness views are derived. An accepted upstream baseline change also advances every affected Specification baseline because its effective Constraint set changed, even when its local text did not. If existing implementation remains valid, no Work Package is required; uncovered or stale work produces one for the new effective baseline.
 
 **The identifier says who carries a baseline.**
 
 ```text
-carries its own                    takes the revision of what it
-                                   is composed against
-───────────────                    ─────────────────────────────
+carries its own                    resolves a governing Specification baseline
+───────────────                    ───────────────────────────────────────────
 SPEC-0017        Specification      SPEC-0017-CAP-0001   Capability
 SOURCE-0001      Source             SPEC-0017-CON-0001   Constraint
                                    SPEC-0017-REQ-0003   Requirement
@@ -904,9 +742,9 @@ SOURCE-0001      Source             SPEC-0017-CON-0001   Constraint
                                    SPEC-0017-WI-0004    Work Item
 ```
 
-Read the left column: no prefix, because nothing stands above it. Read the right: every identifier names the artifact it hangs from, and that artifact already has a number. Only two classes need one of their own in the current artifact contract; the Charter contract must decide whether it adds a third.
+Read the left column: no prefix, because nothing stands above it. Read the right: every identifier names the Specification from which it originated, while immediate membership resolves the applicable baseline. Only two classes carry their own semantic baseline.
 
-The same rule runs the other Derivation relations. When `SOURCE-0001` reaches 2, `informed-by: [SOURCE-0001@1]` triggers reevaluation exactly as `based-on: [SPEC-0017@3]` does when the Specification reaches 4. Neither comparison predetermines the result: each selects a candidate and requires a semantic reevaluation attestation.
+The same rule governs all Derivation relations. When a Source or upstream Specification advances, any dependent artifact pinned to the earlier baseline is selected for reevaluation. The comparison never predetermines the result; it selects a candidate and requires semantic judgment.
 
 Iteration and supersession are different operations, and Intent and Outcome are what tell them apart:
 
@@ -915,7 +753,7 @@ Iteration and supersession are different operations, and Intent and Outcome are 
 | **Iterate**   | Intent holds and the Outcome remains a refinement of the same success state | Same identifier, baseline rises                                                            |
 | **Supersede** | Intent changes, or the Outcome defines a materially different success state | New identifier; the new artifact declares `supersedes` to the old one, which is deprecated |
 
-An Outcome change therefore does not predetermine the lifecycle operation. Raising a target or refining how the same result is measured normally iterates the Specification. Replacing the state that defines success normally supersedes it. This is a semantic judgment: the fields make the choice explicit and reviewable, while gates verify only that the selected operation is structurally consistent.
+An Outcome change therefore does not predetermine the lifecycle operation. Raising a target or refining how the same result is measured normally iterates the Specification. Replacing the state that defines success normally supersedes it. This is a semantic judgment: the artifact makes the choice explicit and reviewable, while deterministic verification establishes only that the selected operation is structurally consistent.
 
 Everything else in a Specification may be rewritten from end to end while retaining the same identity, provided the Intent holds and the Outcome still describes the same success state. The baseline rises and the affected graph is reevaluated.
 
@@ -932,13 +770,11 @@ Merging one Work Item can leave the mainline holding a half-built capability. Th
 
 **It cannot be otherwise, because git has no cross-repository branch.** A Work Package coordinates several repositories. No branch contains that. If the value boundary were a branch, the multi-repository model would be impossible, and that model is the reason the Work Package exists.
 
-**The framework prescribes no branching model.** One rule stands in place of the several a prescribed flow would need:
+**The framework prescribes no branching model.** One invariant stands in place of the several a prescribed flow would need:
 
-> **Every commit that touches code carries `Realizes:` to a Work Item that exists.**
+> **Every governed implementation change identifies the Work Item it realizes.**
 
-GitFlow, GitHub flow, trunk-based development and feature branching all satisfy it, because none of them forbids a commit message. Whichever a team already runs keeps running.
-
-Nothing is configured either, and that is the part worth noticing. A rule that holds under every flow needs no field naming which flow is in use, no list of supported ones, and no migration on the day a team switches. There is nothing to declare because there is nothing that varies.
+GitFlow, GitHub flow, trunk-based development and feature branching can all satisfy it. The accepted verification contract chooses a durable mechanism without making one flow constitutional.
 
 **The framework does not currently define an integration or activation strategy across repositories.** Git provides no atomic transaction across them, and feature flags, release manifests, environment switching and compatibility techniques establish different operational boundaries. Work Items reach their mainlines subject to their declared dependencies and repository gates; the Work Package coordinates the value boundary and is incomplete until all affected Capabilities are implemented and their verification conditions are satisfied by the declared external authorities. Whether partial implementation may be present in mainline or externally available is left open in [section 12](#12-open-questions).
 
@@ -946,54 +782,19 @@ That is the framework's own Outcome applied to itself. A merge is an output. _Ve
 
 ### 9.2 Linking code to a Work Item
 
-The authority is the commit trailer:
+The authoritative realization claim is attached to immutable implementation history and identifies one existing Work Item. It must avoid circularity, survive the repository's integration strategy, remain forge-independent at the core and support deterministic indexing. The representation and verification Specifications define its concrete encoding.
 
-```text
-Realizes: SPEC-0017-WI-0004
-```
-
-`Realizes:` keeps the word because systems modelling already uses it for the link between a specification element and the thing that fulfils it. Prose in this document says _implement_, where the everyday English sense of the word gets in the way.
-
-| Property                | Why it matters                                                                                                                                    |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Not circular            | The trailer is written _as_ the commit is made. A field inside the Work Item cannot work, because writing the hash into the file changes the hash |
-| Survives squash         | The squashed message carries it, which matters in a repository with linear history                                                                |
-| Plain git               | `git log --format='%(trailers)'` reads it on any forge and on none                                                                                |
-| Incrementally indexable | The index records the last commit processed and moves forward                                                                                     |
-
-In a branch-based flow, a branch named `SPEC-0017-WI-0004` may let a `prepare-commit-msg` hook generate the trailer. That is convenience, not authority: not every flow creates such a branch, and under squash merges the branch name survives only if the forge chooses to keep it. The model does not require this convention.
-
-`realized-by` is derived. Nobody writes it.
-
-`Realizes:` establishes the provenance claim between implementation and Work Item; the trailer alone does not establish completion. A Work Item is realized only when the integrated implementation carrying that claim has been accepted against the Work Item and reached the mainline. How an integration pipeline identifies and attests that final subject belongs to implementation. It never requires writing a commit hash or execution state into canonical artifact frontmatter.
+The claim alone does not establish completion. A Work Item is realized only when the integrated implementation carrying that claim has been accepted against the Work Item and reached the mainline. Validation of that exact implementation subject is a separate evidence-backed fact. Neither fact is made true by writing it into the Work Item.
 
 ### 9.3 Forge independence
 
-| Derived from                    | States available                                                                            |
-| ------------------------------- | ------------------------------------------------------------------------------------------- |
-| **Core plain git**              | realized (accepted integrated implementation carrying the trailer on the mainline)          |
-| **Configured claim convention** | available, claimed, and abandoned when the convention preserves an explicit terminal record |
-| **The forge**                   | in progress (draft), in review, approved, rejected                                          |
+The core requires plain version-control history and immutable evidence, not a particular forge. A configured repository convention or forge may enrich coordination and review views, but losing that integration must not break identity, provenance or realization resolution.
 
-The core requires only the first row. Claim and forge states are optional enrichment: with a declared repository convention or forge the index knows more, and without one the model still works at lower resolution.
+### 9.4 Execution status and evidence
 
-Not an adapter that abstracts everything. A core that needs none, and an adapter that adds detail where one exists.
+Work Package and Work Item carry exactly one explicit execution status for coordination, separate from artifact lifecycle. The representation Specification defines its vocabulary. Transition rules, authorities and preconditions belong to the verification Specification.
 
-### 9.4 Work Item state is derived
-
-The required `status` field records the Work Item artifact lifecycle as defined by OKF: `draft`, `stable` or `deprecated`. The execution state below is a separate property derived from git and forge state; it is never written to frontmatter.
-
-| Situation                                                                                             | Derived state | Source               |
-| ----------------------------------------------------------------------------------------------------- | ------------- | -------------------- |
-| No active claim under the configured convention                                                       | available     | configured flow      |
-| Active claim, no accepted integrated implementation yet                                               | claimed       | configured flow      |
-| Draft pull request open                                                                               | in progress   | forge                |
-| Pull request ready                                                                                    | in review     | forge                |
-| Accepted integrated implementation carrying the trailer is present on the mainline                    | realized      | git                  |
-| Accepted validation receipt for that exact integrated commit is present in the HQ evaluation manifest | validated     | validation authority |
-| Explicit terminal claim record without a realized implementation                                      | abandoned     | configured flow      |
-
-A written execution-state field would be a second source of truth for something git already knows, and it would drift the first time an agent crashed mid-task.
+Execution status does not replace evidence. Realization comes from accepted implementation history, validation from its declared authority, and runtime verification from the authority observing the deployed subject. Generated views may correlate those facts with the declared coordination status and must expose disagreements rather than treating the status as proof.
 
 ### 9.5 Concurrency between agents
 
@@ -1009,37 +810,15 @@ That collapses most of what a concurrency model would otherwise carry.
 
 Real concurrency moves up one level, to two agents holding two Work Packages that touch the same code repository. Neither one can see the other's plan. That case is open, and [section 12](#12-open-questions) records it.
 
-### 9.6 Merge gates
+### 9.6 Merge verification boundary
 
 _Mainline_ here means whatever branch the flow integrates into. Which branch that is belongs to the flow, not to this model.
 
-| Gate | Rule                                                                                                                                                                                                        |
-| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| X1   | Every commit reaching the mainline carries a `Realizes:` trailer resolving to a Work Item in the index                                                                                                      |
-| X2   | The Work Item it names is not deprecated                                                                                                                                                                    |
-| X3   | The change touches only the code repository the Work Item `targets`                                                                                                                                         |
-| X4   | No Work Item in flight `conflicts-with` another currently claimed. Inside one package the owning agent avoids this by scheduling, and the gate is the backstop                                              |
-| X5   | Every `depends-on` of the Work Item is already realized                                                                                                                                                     |
-| X6   | Every realized Work Item on the exact integrated commit SHA has one immutable validation receipt in the HQ evaluation manifest naming that SHA, Work Item, `accepted` verdict, authority, reviewer and time |
-| X7   | Reserved. Its rule must define a portable cross-repository integration or activation invariant that is consistent with the complete model; no behavior is currently enforced                                |
+The execution boundary must deterministically establish that every integrated implementation change resolves to an existing, live Work Item; changes stay within that Work Item's one target repository; declared conflicts and dependencies are respected; and realization of the exact integrated subject has accepted validation evidence from the declared authority.
 
-X1 is the one that keeps the thread unbroken. Code with no trailer is code with no recorded reason, and the thread is cut at the point where it matters most.
+The accepted verification Specification owns the concrete checks, evidence schema and integration mechanism. Judgment belongs to the validating authority, not to the gate: deterministic verification checks the identity, subject, verdict, authority and integrity of the evidence, but does not decide whether the implementation is correct.
 
-X6 is where judgment enters the model, and it is deliberately not the gate's judgment. A reviewer decides whether the implementation satisfies the Work Item, which requires reading both and is not computable. After the integrated SHA exists, the declared validation authority issues an immutable receipt. The gate checks only that every `Realizes:` value has exactly one corresponding receipt, that its subject equals the integrated SHA, that the verdict is `accepted`, and that its declared fields are well formed. Multiple Work Items on one integrated commit therefore remain unambiguous, and validation never changes the commit it attests.
-
-```yaml
-authority: validation:identity-service
-subject: commit:BBB
-work-item: SPEC-0017-WI-0004
-verdict: accepted
-by: agent:reviewer-3
-at: 2026-03-12T09:45:00Z
-receipt: validation:01HRZ...
-```
-
-The receipt is external to the commit but can be stored as an immutable git object or by another configured authority; its identifier and digest are anchored by the HQ evaluation manifest, so no forge is required. The `by` value accepts `agent:` and `human:` alike, and the gate does not distinguish. Which of the two the model should require, and what independence or authorization it must prove, is the open question in [section 12](#12-open-questions).
-
-**The pull request is not a unit of this model. The commit is.** Fifteen commits and four Work Items in one pull request is ordinary under feature branching, and every gate above reads commits, so the case needs no rule of its own.
+The pull request is not a unit of this model. The immutable integrated implementation subject is. A forge may organize several commits and Work Items in one review without changing that boundary.
 
 ### 9.7 Cross-repository consistency
 
@@ -1052,9 +831,9 @@ SPEC-0017-WP-0001 realized by:
   compliance-service  @ commit CCC
 ```
 
-**That view is derived on read and never stored.** It is harvested from `Realizes:` trailers across the registered code repositories, exactly as a Work Item's state is. Writing it into a field would make it wrong immediately, because writing is itself a commit.
+**That view is derived on read and never stored as evidence in an artifact.** It is harvested from realization claims across the registered code repositories. A Work Package's explicit execution status may summarize coordination, but it cannot replace or override this derived implementation view.
 
-The Work Package remains incomplete until every required Work Item is realized and every external verification condition has a passing attestation bound to the exact deployed subject. It orchestrates the Work Items but verifies nothing itself. Its derived view correlates planned state from the Canon, integrated state from git, deployment state from the deployment system, and immutable verification receipts from their declared runtime authority through the HQ evaluation manifest.
+The Work Package reaches evidence-backed completion only when every required Work Item is realized and every external verification condition has a passing attestation bound to the exact deployed subject. It orchestrates the Work Items but verifies nothing itself. Its derived view correlates planned state from the Canon, integrated state from version-control history, deployment state from the deployment system, and immutable verification evidence from the declared runtime authorities.
 
 ## 10. Constitutional principles
 
@@ -1072,16 +851,16 @@ Eighteen constitutional principles bound every solution. They are numbered `PRIN
 | **PRINCIPLE-05** | An artifact lives at the lowest scope that completely owns its subject            | Placement follows conceptual ownership, not convenience                                                                                                              |
 | **PRINCIPLE-06** | Scope hierarchy is independent of repository topology                             | Scopes model ownership; repositories model version-control boundaries                                                                                                |
 | **PRINCIPLE-07** | Every fact has an authority                                                       | Duplicated truth is minimized; authoritative sources are explicit                                                                                                    |
-| **PRINCIPLE-08** | Derived knowledge is generated, not maintained                                    | Traceability matrices and impact reports are computed views, and no state derivable from history is written into an artifact                                         |
+| **PRINCIPLE-08** | Derived knowledge is generated, not maintained                                    | Evidence views are computed; explicit coordination status never substitutes for facts derived from authoritative history                                             |
 | **PRINCIPLE-09** | A Work Item targets exactly one code repository                                   | Cross-repository coordination belongs to the Work Package                                                                                                            |
 | **PRINCIPLE-10** | Work Item is the unit of implementation; Work Package is the unit of coordination | Replaces the Epic/Story mental model                                                                                                                                 |
 | **PRINCIPLE-11** | Context flows downward; evidence flows upward                                     | Agents start from product context and descend; verification propagates back                                                                                          |
 | **PRINCIPLE-12** | Canon and implementation must never knowingly disagree                            | Once judgment identifies a contradiction, Canon or implementation must be reconciled before promotion. Semantic agreement is not established by a deterministic gate |
-| **PRINCIPLE-13** | Promotion is guarded by validators                                                | Crossing a trust boundary requires explicit quality gates                                                                                                            |
+| **PRINCIPLE-13** | Promotion is guarded by validators                                                | Specifications formalize deterministic gates within the semantic boundaries constituted here                                                                         |
 | **PRINCIPLE-14** | Runtime closes the loop                                                           | Verified runtime evidence is part of the thread and feeds future Discovery                                                                                           |
 | **PRINCIPLE-15** | Mess is allowed before promotion; known inconsistency is rejected at promotion    | Promotion is an acceptance boundary: structural consistency is gated, while semantic inconsistency is resolved under PRINCIPLE-12                                    |
 | **PRINCIPLE-16** | A code repository holds no canonical artifacts                                    | Canon and code never sit in one tree, so neither can drift into the other                                                                                            |
-| **PRINCIPLE-17** | Every HQ and Scope is constituted by exactly one root `charter.md`                | A directory without the Charter is not a Scope; only its `specs/` and `sources/` may hold Canon                                                                      |
+| **PRINCIPLE-17** | Every HQ and Scope is constituted by exactly one root `charter.md`                | A directory without the Charter is not a Scope; only its `docs/specs/` and `docs/sources/` may hold Canon                                                            |
 
 Two consequences of PRINCIPLE-00 are easy to miss. The principal actor is an agent, so context cost, determinism and concurrency replace developer experience as design arguments. And **granularity becomes normative**: the ontology holds that size does not determine the category, which is true for classification, but a fifty-page Decision fails PRINCIPLE-00 no matter how well it is classified. Size stops being a matter of style.
 
@@ -1099,19 +878,16 @@ Where the ideas come from, so a reader can tell what is borrowed from what is co
 | Architecture Decision Record                   | [Michael Nygard, 2011](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions)                                                                                                                                           | The Decision class's ancestor                                                                                              |
 | Trunk-Based Development                        | [Paul Hammant, continuous delivery practice](https://trunkbaseddevelopment.com/)                                                                                                                                                               | The recommended default flow, not the execution model                                                                      |
 | Feature branching, GitFlow, GitHub flow        | [Fowler, 2020](https://martinfowler.com/articles/branching-patterns.html), [Driessen, 2010](https://nvie.com/posts/a-successful-git-branching-model/), [GitHub documentation](https://docs.github.com/en/get-started/using-github/github-flow) | The flows the execution model tolerates without prescribing one                                                            |
-| Commit trailers                                | [git `interpret-trailers`](https://git-scm.com/docs/git-interpret-trailers), and the `Signed-off-by` convention it documents                                                                                                                   | `Realizes:` as the link from code to a Work Item                                                                           |
 | Stacked pull requests                          | Phabricator, and the tools that followed. The original tool is archived                                                                                                                                                                        | Dependent Work Items                                                                                                       |
-| Progressive disclosure, provenance frontmatter | [OpenKnowledgeFormat, Google Cloud, 2026](https://github.com/GoogleCloudPlatform/open-knowledge-format)                                                                                                                                        | The substrate and metadata vocabulary                                                                                      |
+| Progressive disclosure                         | [OpenKnowledgeFormat, Google Cloud, 2026](https://github.com/GoogleCloudPlatform/open-knowledge-format)                                                                                                                                        | The generated navigation entry point and bounded context                                                                   |
 | Ubiquitous language                            | Domain-Driven Design, Eric Evans, Addison-Wesley, 2003                                                                                                                                                                                         | Why the vocabulary is enforced rather than suggested                                                                       |
 | Constitutional charter and delegated authority | Constitutional and federal governance traditions, with no single originating source                                                                                                                                                            | Why every jurisdiction carries one Charter while child membership and delegation derive from nesting and parent acceptance |
 
 ### 11.1 The relationship to OpenKnowledgeFormat
 
-[OKF](https://github.com/GoogleCloudPlatform/open-knowledge-format) is adopted as **substrate and metadata vocabulary**, not as graph model.
+[OKF](https://github.com/GoogleCloudPlatform/open-knowledge-format) is the principal influence on Integral's inspectable knowledge representation and progressive disclosure. The Charter does not freeze an OKF version, serialization format or metadata field list; the accepted representation Specification records which substrate and conventions apply.
 
-Adopted directly: markdown with frontmatter and no required SDK; `index.md` as progressive disclosure; the `sources`, `generated`, `verified`, `status` and `stale_after` fields; and the attested-computation pattern, whose attester is explicitly deterministic non-LLM code.
-
-Two places where Integral adds what OKF deliberately omits:
+Integral retains two constitutional requirements that any substrate must support:
 
 **Identity.** OKF makes the concept identifier the file's path. That is coherent for a corpus whose directory structure is, in OKF's own words, independent of the domain, so paths never move. It breaks at the operation this model is built around: an artifact moving between scopes when ownership changes.
 
@@ -1123,19 +899,17 @@ Neither is a flaw in OKF. They are the difference between a knowledge catalog an
 
 This document describes the agreed model and identifies the constitutional questions it deliberately leaves unresolved.
 
-| Question                                               | Why it is unresolved                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **The judgment points**                                | Gates check form, never correctness. At the execution seam, judgment appears as an immutable validation receipt and the gate reads its form and accepted verdict, not semantic truth. G7 likewise consumes a reevaluation attestation without issuing it. No equivalent judgment is yet defined for authorizing the transition from Design to a build-ready Work Package, including whether effective Constraints inherited from several Specifications are semantically compatible. Who or what may issue these judgments, what independence they require, and by what acceptance rule, remains unresolved |
-| **Retrospective conformance**                          | A future exception may let a Decision adopt an existing integrated implementation without creating a Work Item or retroactive `follows`. It is not active in G4. The model requires an auditable fact binding the Decision, exact integrated subject, verdict, authority and time; its portable representation and attestation mechanism remain undefined                                                                                                                                                                                                                                                   |
-| **Distributed delegation**                             | Genesis, amendment and same-repository delegation are accepted git revisions, not parallel receipts. The portable authorization contract for a child Scope held in another repository remains unresolved                                                                                                                                                                                                                                                                                                                                                                                                    |
-| **Aggregate containment and `part-of`**                | Work Items are physically colocated under their Work Package aggregate while `part-of` remains a declared relation. Whether the relation should become derived from that accepted placement, or the physical layout should stop nesting Work Items, remains unresolved                                                                                                                                                                                                                                                                                                                                      |
-| **Discovery provenance**                               | Discovery Space is untracked, and the Intent and Requirements that enter the Canon come from it. OKF's `sources` is the mechanism; the rule for when it is required is unwritten                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| **Trust is not binary**                                | A baseline is one number. It cannot distinguish an artifact a person reviewed yesterday from one an agent generated two years ago and nobody read                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| **Design-stage divergence**                            | Prototypes and vendor evaluations are not Decisions, and the model gives them no home. A vendor evaluation is also the record of what was rejected, which is expensive to lose                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| **Two agents, two Work Packages, one code repository** | One agent per Work Package removed every collision inside a package and moved them up a level, where neither agent can see the other's plan                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| **Cross-repository integration strategy**              | Git provides no atomic transaction across repositories. Feature flags, release manifests, environment switching and compatibility techniques can coordinate activation, but the framework does not yet define a portable integration or activation contract                                                                                                                                                                                                                                                                                                                                                 |
-| **Multi-HQ**                                           | The identifier grammar reserves the namespace. Nothing resolves across HQs                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| **Historical adoption**                                | A legacy estate must enter by reconstructing the historical graph from current implementation and surviving evidence, not by pretending every existing commit already followed the model. The ordering, confidence levels and minimum evidence required for that reconstruction remain to be defined                                                                                                                                                                                                                                                                                                        |
+| Question                                               | Why it is unresolved                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **The judgment points**                                | Gates check form, never correctness. At the execution seam, judgment appears as immutable validation evidence and deterministic verification reads its form and verdict, not semantic truth. No equivalent judgment is yet defined for authorizing the transition from Design to a build-ready Work Package, including whether effective Constraints inherited from several Specifications are semantically compatible. Who or what may issue these judgments, what independence they require, and by what acceptance rule, remains unresolved |
+| **Retrospective conformance**                          | A future exception may let a Decision adopt an existing integrated implementation without creating a Work Item or retroactive `follows`. The model requires an auditable fact binding the Decision, exact integrated subject, verdict, authority and time; its portable representation and attestation mechanism remain undefined                                                                                                                                                                                                              |
+| **Distributed delegation**                             | Genesis, amendment and same-repository delegation are accepted git revisions, not parallel receipts. The portable authorization contract for a child Scope held in another repository remains unresolved                                                                                                                                                                                                                                                                                                                                       |
+| **Trust is not binary**                                | A baseline is one number. It cannot distinguish an artifact a person reviewed yesterday from one an agent generated two years ago and nobody read                                                                                                                                                                                                                                                                                                                                                                                              |
+| **Design-stage divergence**                            | Prototypes and vendor evaluations are not Decisions, and the model gives them no home. A vendor evaluation is also the record of what was rejected, which is expensive to lose                                                                                                                                                                                                                                                                                                                                                                 |
+| **Two agents, two Work Packages, one code repository** | One agent per Work Package removed every collision inside a package and moved them up a level, where neither agent can see the other's plan                                                                                                                                                                                                                                                                                                                                                                                                    |
+| **Cross-repository integration strategy**              | Git provides no atomic transaction across repositories. Feature flags, release manifests, environment switching and compatibility techniques can coordinate activation, but the framework does not yet define a portable integration or activation contract                                                                                                                                                                                                                                                                                    |
+| **Multi-HQ**                                           | The identifier grammar reserves the namespace. Nothing resolves across HQs                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Historical adoption**                                | A legacy estate must enter by reconstructing the historical graph from current implementation and surviving evidence, not by pretending every existing commit already followed the model. The ordering, confidence levels and minimum evidence required for that reconstruction remain to be defined                                                                                                                                                                                                                                           |
 
 ## 13. Common misreadings
 
@@ -1187,7 +961,7 @@ Failure modes this framework invites. Each one is a reasonable reading of a rule
 
 **Cause.** The merge boundary was confused with the value boundary.
 
-**Correction.** A Work Item is realized when an accepted integrated implementation carrying its trailer reaches the mainline. A Work Package is complete only when every planned Work Item is realized and external authorities provide the required verification records. The Work Package orchestrates that boundary; it does not perform the verification.
+**Correction.** A Work Item is realized when an accepted integrated implementation carrying its realization claim reaches the mainline. A Work Package has evidence-backed completion only when every planned Work Item is realized and external authorities provide the required verification records. Its explicit execution status coordinates work but cannot prove those facts.
 
 ### A hotfix bypasses the lifecycle
 
@@ -1203,7 +977,7 @@ Failure modes this framework invites. Each one is a reasonable reading of a rule
 
 **Cause.** A preference or an observation was filed as a Constraint.
 
-**Correction.** Name the Intent the Constraint serves. If none exists, it is not a Constraint. A preference belongs in a Decision, where `rejected` records what lost and why. An observation belongs in a Source, where `retrieved` records when it was true.
+**Correction.** Name the Intent the Constraint serves. If none exists, it is not a Constraint. A preference belongs in a Decision, which preserves what lost and why. An observation may belong in a Source, which records when the underlying material was consulted.
 
 ### An internal foundational document is automatically treated as a Source
 
@@ -1219,23 +993,23 @@ Failure modes this framework invites. Each one is a reasonable reading of a rule
 
 **Cause.** Parent membership was confused with local constitution.
 
-**Correction.** Every HQ and Scope carries exactly one root `charter.md`. Nesting derives the parent and the local Charter defines the child jurisdiction. Within one repository, the accepted git revision introducing that Charter records the parent's authorization; cross-repository delegation requires a portable authorization contract. Without a local Charter the directory is not a Scope and cannot own `specs/` or `sources/` Canon.
+**Correction.** Every HQ and Scope carries exactly one root `charter.md`. Nesting derives the parent and the local Charter defines the child jurisdiction. Within one repository, the accepted git revision introducing that Charter records the parent's authorization; cross-repository delegation requires a portable authorization contract. Without a local Charter the directory is not a Scope and cannot own `docs/specs/` or `docs/sources/` Canon.
 
-### Canon is placed in a generic documentation tree
+### The Canon root is treated as a generic documentation tree
 
-**Symptom.** Paths such as `identity/docs/models/` appear, and an agent must read their contents to learn whether `models` is a Scope, a Specification, implementation material or exploration.
+**Symptom.** Paths such as `identity/docs/models/` appear, and an agent must read their contents to learn whether `models` is canonical, implementation material or exploration.
 
 **Cause.** File format and familiar folder names were allowed to substitute for the ontology.
 
-**Correction.** Integral has no structural `docs/` or `models/` category. Canon exists only under `specs/` and `sources/`; exploration belongs in `discovery/`; a new jurisdiction is a child directory with exactly one root `charter.md`; implementation remains in code repositories.
+**Correction.** `docs/` is the reserved Canon root, not a catch-all. Canon exists only under its `specs/` and `sources/` collections; exploration belongs in `discovery/`; a new jurisdiction is a child directory with exactly one root `charter.md`; implementation remains in code repositories.
 
-### A Source is stored as a loose file
+### One aggregate layout is treated as constitutional
 
-**Symptom.** `sources/SOURCE-0001.md` sits beside other Source files and has no aggregate boundary for future supporting material or atomic movement between Scopes.
+**Symptom.** A change to file placement is treated as requiring a Charter amendment even though artifact meaning, identity, authority and membership remain unchanged.
 
-**Cause.** Source was treated as a flat Markdown collection instead of a root artifact class.
+**Cause.** One representation was confused with the semantic model it implements.
 
-**Correction.** The canonical shape is `sources/SOURCE-0001/SOURCE-0001.md`. Directory and principal file match the identifier, and the complete aggregate moves without changing that identity.
+**Correction.** The Charter reserves the Canon boundary and collections; the accepted representation Specification owns artifact files and aggregate layout. Change that Specification when the representation changes, and amend the Charter only when a constitutional invariant changes.
 
 ### The Canon and the repositories are read as a division of labour
 
@@ -1276,21 +1050,18 @@ Failure modes this framework invites. Each one is a reasonable reading of a rule
 ```text
 <scope>/
 ├── charter.md
-├── index.md                     generated once Canon materializes
 ├── discovery/                  ignored, non-canonical
-├── specs/
-│   └── SPEC-NNNN/
-│       └── SPEC-NNNN.md
-├── sources/
-│   └── SOURCE-NNNN/
-│       └── SOURCE-NNNN.md
+├── docs/                        reserved Canon root
+│   ├── index.md                 generated once Canon materializes
+│   ├── specs/                   Specifications
+│   └── sources/                 Sources
 └── <child-scope>/
     ├── charter.md
     └── ...
 ```
 
 `charter.md` makes the containing directory a Scope. Canon exists only below
-that Scope's `specs/` and `sources/`; child Scope membership derives from
+that Scope's `docs/specs/` and `docs/sources/`; child Scope membership derives from
 nesting.
 
 ### Identifier forms
@@ -1310,15 +1081,18 @@ SOURCE-0001@1            The same form. Specification and Source are the
                         only classes carrying a baseline of their own
 ```
 
-### The thirteen relations
+### The thirteen conceptual relations
 
 ```text
 Derivation     based-on  specifies  respects  narrows  informed-by
                satisfies  implements  follows
 Reference      references
-Coordination   depends-on  conflicts-with  part-of
+Membership     part-of
+Coordination   depends-on  conflicts-with
 Lifecycle      supersedes
 ```
+
+Their serialized names, direction and shape belong to the representation Specification.
 
 ### The classification test
 
@@ -1339,11 +1113,14 @@ What actually implements it?     → Implementation
 ### The rules that decide most arguments
 
 ```text
-Provenance is declared upward. Navigation is derived downward.
-Composition is never declared; the identifier states it.
+A dependency belongs to the dependent; membership to the constituent.
+Reverse navigation is derived. The identifier states origin.
 
 The nearest containing charter.md identifies the Scope. Only that
-Scope's specs/ and sources/ hold Canon.
+Scope's docs/specs/ and docs/sources/ hold Canon.
+
+WI part-of WP part-of SPEC@baseline resolves membership transitively.
+Capability and Constraint membership is intrinsic to the Specification.
 
 A relation type exists to answer one question: if the other end
 changes, what happens to me?
