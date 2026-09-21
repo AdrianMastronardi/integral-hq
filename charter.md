@@ -411,7 +411,7 @@ A deterministic, computable check over declared inputs that blocks a promotion w
 A judgment about whether something is right, recorded as immutable evidence so that deterministic verification can establish that it happened. A review is not deterministic and never becomes a gate. At the execution seam, its evidence identifies the exact implementation subject, Work Item, verdict, authority, actor and time. It lives outside the subject it attests and must remain independently verifiable.
 
 **Baseline**
-The current agreed semantic revision of a Specification or Source. It is not merely a repository revision: raising it is a deliberate act. A baseline must resolve immutably to the complete accepted meaning it names, including upstream Specification baselines where applicable. Downstream artifacts identify the exact baseline on which their meaning depends.
+The current agreed semantic revision of a Specification or Source. It is not merely a repository revision: raising it is a deliberate act. A baseline must resolve immutably to the complete accepted meaning it names, including its resolved Derivation input closure where applicable. Downstream artifacts identify the exact baseline on which their meaning depends.
 
 **Digital Thread**
 The traversable chain of provenance from intent to verified runtime capability. Borrowed from product lifecycle management in manufacturing, where it names the same idea applied to physical goods.
@@ -435,7 +435,7 @@ Something the product must be able to do in order to produce the Outcome. Formul
 
 Integral prefers Capability over **Feature**, which is ambiguous across two orders of magnitude: the same word covers _dark mode_ and _authentication platform_, and no rule can be written that applies sensibly to both.
 **Constraint**
-Something already true that this work cannot violate: a regulation, a standing commitment, a limit the organization accepted. The work does not produce it and cannot negotiate it away. It belongs to one Specification, is evaluated there with its Capabilities, and constrains every separate Requirement, Decision and Work Item reached through the non-exclusive Specification hierarchy by derived `constrained-by` edges. Another Constraint may explicitly tighten it by declaring `narrows`; transitive `based-on`, never Scope placement, determines inheritance. Example: _biometric data never leaves the region it was captured in_.
+Something already true that this work cannot violate: a regulation, a standing commitment, a limit the organization accepted. The work does not produce it and cannot negotiate it away. It belongs to one Specification, is evaluated there with its Capabilities, and constrains every separate Requirement, Decision and Work Item reached through the non-exclusive Specification hierarchy by derived `constrained-by` edges. Another Constraint may explicitly tighten it by declaring `narrows`; transitive `based-on`, never Scope placement, determines inheritance, and a Constraint may narrow only a Constraint it inherits that way. Tightening one that does not reach this work would bound something that never applied to it. Example: _biometric data never leaves the region it was captured in_.
 
 A Constraint always serves an Intent, and the test is worth stating: **if you cannot name the Intent a Constraint serves, you do not have a Constraint.** You have a preference, which belongs in a Decision, or an observation, which belongs in a Source. _The payment provider caps 100 requests per second_ is an observation about the world. _Our checkout stays under that cap_ is the Constraint, and it serves the Intent that checkout works.
 
@@ -450,7 +450,7 @@ A condition, behavior or property that must hold for a Capability to be correctl
 **Decision**
 A durable solution commitment that constrains subsequent work, carrying the alternatives it rejected and the reason each lost. Local or readily reversible implementation choices are not Decisions. Example: _session state lives in the signed token; a server-side session store was rejected because the deployment target has no shared cache_.
 
-A Decision is authoritative only for the commitments it states. A difference between Canon and implementation is therefore not automatically a contradiction: deciding whether the implementation violates a stated commitment requires judgment. Deterministic gates cannot establish semantic agreement. PRINCIPLE-12 governs what happens after that judgment identifies a disagreement: the implementation or the Canon must be reconciled before promotion, because known inconsistency is not an acceptable steady state.
+A Decision is authoritative only for the commitments it states. A difference between Canon and implementation is therefore not automatically a contradiction: deciding whether the implementation violates a stated commitment requires judgment. Deterministic gates cannot establish semantic agreement. PRINCIPLE-12 governs what happens after that judgment identifies a disagreement: it must be carried by accepted work toward reconciliation. Governed divergence is ordinary execution; a known disagreement nothing is carrying is not an acceptable steady state.
 
 **Work Item**
 The smallest planned unit of change that is independently implementable and independently verifiable. It belongs to exactly one Work Package under one Specification, implements Requirements of that Specification only, and must target exactly one code repository.
@@ -683,7 +683,7 @@ Two reevaluation candidates out of five neighbors. Deterministic traversal selec
 
 ### 8.1 What promotion is
 
-Promotion is the only way knowledge enters or advances in the Canon. It is a consistency boundary: crossing it asserts that the Canon is not knowingly inconsistent with what it describes.
+Promotion is the only way knowledge enters or advances in the Canon. It is a consistency boundary: crossing it asserts that the Canon is internally consistent and that every known gap between it and the implementation is governed.
 
 Constituting a Scope is the structural event immediately before that rule can apply there. Genesis is the accepted git revision that introduces the HQ's root `charter.md`; an accepted revision introducing a child `charter.md` creates a child Scope under the authority of its parent. A directory cannot receive a Specification or Source promotion before that event. Git does not represent empty collections, so `docs/specs/`, `docs/sources/` and the first generated `docs/index.md` materialize with the Scope's first ordinary promotion rather than pretending to exist at Genesis. A separate portable authorization record is required only when authority crosses repository boundaries; it must never masquerade as ordinary artifact promotion.
 
@@ -723,11 +723,13 @@ This boundary is deliberate, and it is also the framework's largest open questio
 
 **Specification and Source are the only artifact classes that carry semantic baselines.** Before first promotion they have no baseline. Artifact lifecycle and semantic revision remain distinct concepts: lifecycle says where an artifact stands, while baseline identifies one agreed meaning. The representation Specification defines how both are encoded and their vocabularies; the verification Specification defines the allowed transitions and checks.
 
-A Specification baseline names its Intent, Outcome, inline Capabilities, inline Constraints, Requirements and resolved upstream Specification baseline set. A semantic change to any of those advances the baseline through the same promotion boundary. Decisions, Work Packages and Work Items are derivatives associated with the applicable Specification baseline; creating one does not redefine the Specification. For a Source, the baseline includes only its own semantic content.
+A Specification baseline names its Intent, Outcome, inline Capabilities, inline Constraints, Requirements and its resolved Derivation input closure. The closure is every Derivation input declared by the Specification, by its inline Capabilities, Constraints and Requirements, and by its Decisions, Work Packages and Work Items, resolved to the baseline that governs the target. Only Specification and Source carry baselines, so an input targeting a constituent resolves the baseline of the Specification that holds it. A semantic change to any named element, or any change to the resolved closure, advances the baseline through the same promotion boundary. Decisions, Work Packages and Work Items remain derivatives associated with the applicable Specification baseline: creating one does not redefine the Specification's normative content, but one that introduces a Derivation input the closure did not already hold advances its baseline. For a Source, the baseline includes only its own semantic content.
 
-Every baseline resolves immutably to accepted content and its upstream baseline set. Verification rejects silent semantic changes and reuse of one baseline for different content. The exact ledger, digest and manifest representations belong to the verification Specification.
+The closure is declared one hop and resolved transitively. A Specification names only the exact baselines it depends on directly; each of those already resolves immutably to its own closure, so naming `SPEC-0012@4` carries whatever `SPEC-0012@4` was accepted against. Source baselines are leaves, so the closure terminates. Provenance is declared upward here as it is everywhere else.
 
-When a baseline changes, deterministic graph traversal selects affected Derivation descendants for reevaluation. It does not decide whether they remain valid. The resulting judgment is recorded as immutable evidence, from which freshness views are derived. An accepted upstream baseline change also advances every affected Specification baseline because its effective Constraint set changed, even when its local text did not. If existing implementation remains valid, no Work Package is required; uncovered or stale work produces one for the new effective baseline.
+Every baseline resolves immutably to accepted content and its resolved closure. Verification rejects silent semantic changes and reuse of one baseline for different content or a different resolved closure. The exact ledger, digest and manifest representations belong to the verification Specification.
+
+When a baseline changes, deterministic graph traversal selects affected Derivation descendants for reevaluation. It does not decide whether they remain valid. The resulting judgment is recorded as immutable evidence, from which freshness views are derived. An accepted reevaluation against a changed closure advances the affected Specification baseline, even when its local content did not change. The advance is an accepted act, not an automatic consequence of the selection: what this Charter requires is that the acceptance be recorded as a new baseline rather than folded into the existing one. `SPEC-0021@2` was accepted against `SOURCE-0001@1`; accepting the same words against `SOURCE-0001@2` is a different fact and needs its own number. If existing implementation remains valid, no Work Package is required; uncovered or stale work produces one for the new effective baseline.
 
 **The identifier says who carries a baseline.**
 
@@ -835,32 +837,49 @@ SPEC-0017-WP-0001 realized by:
 
 The Work Package reaches evidence-backed completion only when every required Work Item is realized and every external verification condition has a passing attestation bound to the exact deployed subject. It orchestrates the Work Items but verifies nothing itself. Its derived view correlates planned state from the Canon, integrated state from version-control history, deployment state from the deployment system, and immutable verification evidence from the declared runtime authorities.
 
+### 9.8 Governed divergence
+
+Promotion changes the Canon. Integration, deployment and verification change what runs. Nothing makes them simultaneous, and nothing should: a Specification advances at the moment it is accepted, and the implementation converges afterwards. The interval between them is not a defect in the model. It is the execution model.
+
+Two states must never be represented as one:
+
+| State                        | What it is                                                                                                                                                                                                                                            | Admissible                      |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| **Governed divergence**      | A Requirement of the current Specification baseline is not fulfilled, and it is covered by live accepted work bound to that baseline. A Requirement the baseline has just created and not yet covered is an open obligation, not yet an inconsistency | Yes. This is ordinary execution |
+| **Ungoverned inconsistency** | A Requirement of the current baseline stands uncovered at a promotion boundary, or the implementation contradicts a stated Decision commitment with nothing accepted to reconcile it                                                                  | No                              |
+
+The distinction belongs in the model rather than in judgment because half of it is mechanical. Whether the implementation fulfills a Requirement requires judgment and arrives as evidence from a declared authority. Whether live accepted work covering that Requirement exists under the current baseline is a graph query. PRINCIPLE-12 forbids the second state, and only the second.
+
+Promotion is where the distinction is enforced, which is the same boundary PRINCIPLE-15 already names. What crossing it asserts is not that the implementation already matches, but that the Canon is internally consistent and that every gap the accepted Canon opens is covered.
+
+A governed gap is a claim about the present, not a standing licence. It holds while the work covering it remains live and bound to the current baseline. Work that a reevaluation finds stale stops covering anything, and the gap it held becomes ungoverned without anyone editing a Canon artifact. Living with a divergence indefinitely is therefore not a third state: either work continues to cover it, or the Canon is amended to what will actually be sustained. What counts as live work belongs to the verification Specification.
+
 ## 10. Constitutional principles
 
 Eighteen constitutional principles bound every solution. They are numbered `PRINCIPLE-NN` and referenced by number throughout the framework.
 
 **PRINCIPLE-00 is the metaprinciple.** The other seventeen bound the solution; PRINCIPLE-00 ranks them, and every choice in this document was judged against it first: identity over paths, typed relations over untyped, derived views over maintained ones, one document per question over one document that knows everything.
 
-| ID               | Constitutional principle                                                          | Consequence                                                                                                                                                          |
-| ---------------- | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **PRINCIPLE-00** | Every artifact is reachable within a bounded context budget                       | A correct artifact that cannot be reached does not do its job                                                                                                        |
-| **PRINCIPLE-01** | Discovery optimizes for exploration                                               | Discovery Space is allowed to be messy, personal and heterogeneous                                                                                                   |
-| **PRINCIPLE-02** | Canon optimizes for shared truth                                                  | Canonical artifacts are curated, structured, versioned and traceable                                                                                                 |
-| **PRINCIPLE-03** | Only promoted knowledge enters the Canon                                          | Existing somewhere grants nothing                                                                                                                                    |
-| **PRINCIPLE-04** | Artifact identity is independent of location                                      | Paths move when scopes reorganize; identifiers do not                                                                                                                |
-| **PRINCIPLE-05** | An artifact lives at the lowest scope that completely owns its subject            | Placement follows conceptual ownership, not convenience                                                                                                              |
-| **PRINCIPLE-06** | Scope hierarchy is independent of repository topology                             | Scopes model ownership; repositories model version-control boundaries                                                                                                |
-| **PRINCIPLE-07** | Every fact has an authority                                                       | Duplicated truth is minimized; authoritative sources are explicit                                                                                                    |
-| **PRINCIPLE-08** | Derived knowledge is generated, not maintained                                    | Evidence views are computed; explicit coordination status never substitutes for facts derived from authoritative history                                             |
-| **PRINCIPLE-09** | A Work Item targets exactly one code repository                                   | Cross-repository coordination belongs to the Work Package                                                                                                            |
-| **PRINCIPLE-10** | Work Item is the unit of implementation; Work Package is the unit of coordination | Replaces the Epic/Story mental model                                                                                                                                 |
-| **PRINCIPLE-11** | Context flows downward; evidence flows upward                                     | Agents start from product context and descend; verification propagates back                                                                                          |
-| **PRINCIPLE-12** | Canon and implementation must never knowingly disagree                            | Once judgment identifies a contradiction, Canon or implementation must be reconciled before promotion. Semantic agreement is not established by a deterministic gate |
-| **PRINCIPLE-13** | Promotion is guarded by validators                                                | Specifications formalize deterministic gates within the semantic boundaries constituted here                                                                         |
-| **PRINCIPLE-14** | Runtime closes the loop                                                           | Verified runtime evidence is part of the thread and feeds future Discovery                                                                                           |
-| **PRINCIPLE-15** | Mess is allowed before promotion; known inconsistency is rejected at promotion    | Promotion is an acceptance boundary: structural consistency is gated, while semantic inconsistency is resolved under PRINCIPLE-12                                    |
-| **PRINCIPLE-16** | A code repository holds no canonical artifacts                                    | Canon and code never sit in one tree, so neither can drift into the other                                                                                            |
-| **PRINCIPLE-17** | Every HQ and Scope is constituted by exactly one root `charter.md`                | A directory without the Charter is not a Scope; only its `docs/specs/` and `docs/sources/` may hold Canon                                                            |
+| ID               | Constitutional principle                                                             | Consequence                                                                                                                                                                                                                                |
+| ---------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **PRINCIPLE-00** | Every artifact is reachable within a bounded context budget                          | A correct artifact that cannot be reached does not do its job                                                                                                                                                                              |
+| **PRINCIPLE-01** | Discovery optimizes for exploration                                                  | Discovery Space is allowed to be messy, personal and heterogeneous                                                                                                                                                                         |
+| **PRINCIPLE-02** | Canon optimizes for shared truth                                                     | Canonical artifacts are curated, structured, versioned and traceable                                                                                                                                                                       |
+| **PRINCIPLE-03** | Only promoted knowledge enters the Canon                                             | Existing somewhere grants nothing                                                                                                                                                                                                          |
+| **PRINCIPLE-04** | Artifact identity is independent of location                                         | Paths move when scopes reorganize; identifiers do not                                                                                                                                                                                      |
+| **PRINCIPLE-05** | An artifact lives at the lowest scope that completely owns its subject               | Placement follows conceptual ownership, not convenience                                                                                                                                                                                    |
+| **PRINCIPLE-06** | Scope hierarchy is independent of repository topology                                | Scopes model ownership; repositories model version-control boundaries                                                                                                                                                                      |
+| **PRINCIPLE-07** | Every fact has an authority                                                          | Duplicated truth is minimized; authoritative sources are explicit                                                                                                                                                                          |
+| **PRINCIPLE-08** | Derived knowledge is generated, not maintained                                       | Evidence views are computed; explicit coordination status never substitutes for facts derived from authoritative history                                                                                                                   |
+| **PRINCIPLE-09** | A Work Item targets exactly one code repository                                      | Cross-repository coordination belongs to the Work Package                                                                                                                                                                                  |
+| **PRINCIPLE-10** | Work Item is the unit of implementation; Work Package is the unit of coordination    | Replaces the Epic/Story mental model                                                                                                                                                                                                       |
+| **PRINCIPLE-11** | Context flows downward; evidence flows upward                                        | Agents start from product context and descend; verification propagates back                                                                                                                                                                |
+| **PRINCIPLE-12** | Canon and implementation may knowingly diverge only while the divergence is governed | Live accepted work covering a gap against the current baseline makes it admissible; a gap nothing covers is ungoverned inconsistency and is never an acceptable state. Semantic agreement is still not established by a deterministic gate |
+| **PRINCIPLE-13** | Promotion is guarded by validators                                                   | Specifications formalize deterministic gates within the semantic boundaries constituted here                                                                                                                                               |
+| **PRINCIPLE-14** | Runtime closes the loop                                                              | Verified runtime evidence is part of the thread and feeds future Discovery                                                                                                                                                                 |
+| **PRINCIPLE-15** | Mess is allowed before promotion; ungoverned inconsistency is rejected at promotion  | Promotion is an acceptance boundary: structural consistency is gated, semantic inconsistency is resolved under PRINCIPLE-12, and a gap that is governed is not inconsistency                                                               |
+| **PRINCIPLE-16** | A code repository holds no canonical artifacts                                       | Canon and code never sit in one tree, so neither can drift into the other                                                                                                                                                                  |
+| **PRINCIPLE-17** | Every HQ and Scope is constituted by exactly one root `charter.md`                   | A directory without the Charter is not a Scope; only its `docs/specs/` and `docs/sources/` may hold Canon                                                                                                                                  |
 
 Two consequences of PRINCIPLE-00 are easy to miss. The principal actor is an agent, so context cost, determinism and concurrency replace developer experience as design arguments. And **granularity becomes normative**: the ontology holds that size does not determine the category, which is true for classification, but a fifty-page Decision fails PRINCIPLE-00 no matter how well it is classified. Size stops being a matter of style.
 
@@ -937,7 +956,7 @@ Failure modes this framework invites. Each one is a reasonable reading of a rule
 
 **Cause.** The Decision was treated as an exhaustive description of the implementation rather than as a set of explicit commitments.
 
-**Correction.** A Decision governs only the commitments it explicitly states. Determining that code contradicts one of them requires judgment; once identified, PRINCIPLE-12 requires the contradiction to be resolved rather than accepted as steady state.
+**Correction.** A Decision governs only the commitments it explicitly states. Determining that code contradicts one of them requires judgment; once identified, PRINCIPLE-12 requires it to be carried by accepted work toward reconciliation rather than left standing as steady state.
 
 ### An artifact is renamed when its owner changes
 
@@ -1043,6 +1062,12 @@ Failure modes this framework invites. Each one is a reasonable reading of a rule
 
 **Correction.** A relation type exists to answer one question: if the other end changes, what happens to me? `references` is the correct choice for a citation, and it propagates nothing.
 
+### Execution lag is treated as a constitutional violation
+
+**Symptom.** A Specification cannot be promoted until the code already matches it, so the Canon is written after the fact and the thread records what was built rather than what was intended.
+
+**Correction.** Canon leads and implementation converges. PRINCIPLE-12 forbids a gap nothing covers, not a gap. A promoted baseline with a live Work Package is the model working.
+
 ## Appendix A: Quick reference
 
 ### Scope layout
@@ -1128,7 +1153,8 @@ changes, what happens to me?
 Gates check that the graph is well formed. They never check that
 it is right.
 
-Mess is allowed before promotion. Inconsistency is not allowed after.
+Mess is allowed before promotion. Known divergence after it must be
+governed toward convergence.
 
 Knowledge that cannot be reached within a context budget does not
 exist for whoever writes most of the code today.
